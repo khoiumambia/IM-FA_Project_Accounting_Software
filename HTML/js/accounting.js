@@ -400,6 +400,8 @@ function updateExchangeRate(currencyCode, newRate) {
  * Refresh all currency displays on the page
  */
 function refreshCurrencyDisplay() {
+    console.log('Refreshing currency displays');
+    
     // Update all amount displays
     document.querySelectorAll('.currency-amount, .debit, .credit, .amount, .value').forEach(el => {
         const originalAmount = parseFloat(el.getAttribute('data-original-amount'));
@@ -410,6 +412,20 @@ function refreshCurrencyDisplay() {
     
     // Update summary cards
     updateCurrencySummaries();
+    
+    // Update any active conversion info
+    const paymentAmount = document.getElementById('payment-amount');
+    if (paymentAmount && paymentAmount.value) {
+        handleCurrencyChange('payment');
+    }
+    
+    const receiptAmount = document.getElementById('receipt-amount');
+    if (receiptAmount && receiptAmount.value) {
+        handleCurrencyChange('receipt');
+    }
+    
+    // Update currency button display
+    updateCurrencyButtonDisplay();
 }
 
 /**
@@ -434,139 +450,26 @@ function updateCurrencySummaries() {
     });
 }
 
-/**
- * Show currency selection modal - FIXED POSITION
- */
-function showCurrencyModal() {
-    console.log('Opening currency modal');
-    
-    // Remove existing modal if any
-    const existingModal = document.getElementById('currency-modal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-    
-    // Create modal HTML with proper structure
-    const modalHTML = `
-        <div id="currency-modal" class="modal" style="display: flex;">
-            <div class="modal-content" style="max-width: 550px; margin: auto;">
-                <span class="close-modal" onclick="closeCurrencyModal()">&times;</span>
-                <h3><i class="fas fa-money-bill-wave"></i> Currency Settings</h3>
-                
-                <div class="currency-settings" style="max-height: 60vh; overflow-y: auto; padding-right: 0.5rem;">
-                    <div class="setting-group" style="margin-bottom: 1.5rem;">
-                        <label for="base-currency" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Base Currency:</label>
-                        <select id="base-currency" onchange="updateBaseCurrency()" style="width: 100%; padding: 0.8rem;">
-                            ${Object.keys(currencies).map(code => `
-                                <option value="${code}" ${currencySettings.baseCurrency === code ? 'selected' : ''}>
-                                    ${currencies[code].flag} ${code} - ${currencies[code].name}
-                                </option>
-                            `).join('')}
-                        </select>
-                        <p class="setting-hint" style="font-size: 1.1rem; color: var(--light-color); margin-top: 0.3rem;">All transactions are stored in this currency</p>
-                    </div>
-                    
-                    <div class="setting-group" style="margin-bottom: 1.5rem;">
-                        <label for="display-currency" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Display Currency:</label>
-                        <select id="display-currency" onchange="updateDisplayCurrency()" style="width: 100%; padding: 0.8rem;">
-                            ${Object.keys(currencies).map(code => `
-                                <option value="${code}" ${currencySettings.displayCurrency === code ? 'selected' : ''}>
-                                    ${currencies[code].flag} ${code} - ${currencies[code].name}
-                                </option>
-                            `).join('')}
-                        </select>
-                        <p class="setting-hint" style="font-size: 1.1rem; color: var(--light-color); margin-top: 0.3rem;">Amounts will be shown in this currency</p>
-                    </div>
-                    
-                    <div class="setting-group" style="margin-bottom: 1.5rem;">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                            <input type="checkbox" id="auto-convert" ${currencySettings.autoConvert ? 'checked' : ''} 
-                                   onchange="toggleAutoConvert()">
-                            Auto-convert amounts on display
-                        </label>
-                    </div>
-                    
-                    <div class="setting-group" style="margin-bottom: 1.5rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Format Settings:</label>
-                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                            <select id="decimal-places" onchange="updateFormatSettings()" style="padding: 0.6rem;">
-                                <option value="0" ${currencySettings.decimalPlaces === 0 ? 'selected' : ''}>0 decimals</option>
-                                <option value="2" ${currencySettings.decimalPlaces === 2 ? 'selected' : ''}>2 decimals</option>
-                                <option value="3" ${currencySettings.decimalPlaces === 3 ? 'selected' : ''}>3 decimals</option>
-                                <option value="4" ${currencySettings.decimalPlaces === 4 ? 'selected' : ''}>4 decimals</option>
-                            </select>
-                            <input type="text" id="thousand-separator" value="${currencySettings.thousandSeparator}" 
-                                   placeholder="Thousand" style="width: 80px; padding: 0.6rem;">
-                            <input type="text" id="decimal-separator" value="${currencySettings.decimalSeparator}" 
-                                   placeholder="Decimal" style="width: 80px; padding: 0.6rem;">
-                        </div>
-                    </div>
-                    
-                    <div class="exchange-rates" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.1);">
-                        <h4 style="margin-bottom: 1rem;"><i class="fas fa-chart-line"></i> Exchange Rates</h4>
-                        <div style="max-height: 250px; overflow-y: auto;">
-                            <table style="width: 100%; font-size: 1.3rem;">
-                                <thead>
-                                    <tr style="background: var(--main-color); color: white;">
-                                        <th style="padding: 0.6rem;">Currency</th>
-                                        <th style="padding: 0.6rem;">Rate (1 ${currencySettings.baseCurrency})</th>
-                                        <th style="padding: 0.6rem;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${Object.keys(currencies).map(code => `
-                                        <tr>
-                                            <td style="padding: 0.5rem;">${currencies[code].flag} ${code}</td>
-                                            <td style="padding: 0.5rem;">
-                                                <input type="number" id="rate-${code}" value="${currencies[code].rate}" 
-                                                       step="0.0001" style="width: 90px; padding: 0.4rem;">
-                                            </td>
-                                            <td style="padding: 0.5rem;">
-                                                <button class="btn small-btn" onclick="updateExchangeRate('${code}', 
-                                                    parseFloat(document.getElementById('rate-${code}').value))" 
-                                                    style="padding: 0.3rem 0.8rem; font-size: 1.1rem;">
-                                                    Update
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                        <p class="setting-hint" style="font-size: 1rem; margin-top: 0.5rem;">
-                            Last updated: ${lastRateUpdate ? new Date(lastRateUpdate).toLocaleString() : 'Never'}
-                        </p>
-                        <button class="btn" onclick="fetchLiveExchangeRates()" style="margin-top: 0.5rem; width: 100%;">
-                            <i class="fas fa-cloud-download-alt"></i> Fetch Live Rates
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="modal-btns" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
-                    <button class="btn cancel-btn" onclick="closeCurrencyModal()" style="background: #6c757d;">Close</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Add modal to body
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // Add click outside to close
+function closeCurrencyModal() {
     const modal = document.getElementById('currency-modal');
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeCurrencyModal();
-        }
-    });
-    
-    escHandler = function(e) {
-    if (e.key === 'Escape') {
-        closeCurrencyModal();
-    }
-};
 
-document.addEventListener('keydown', escHandler);
+    // 🔴 REMOVE event listener FIRST
+    if (escHandler) {
+        document.removeEventListener('keydown', escHandler);
+        escHandler = null;
+    }
+
+    // Then handle modal UI
+    if (modal) {
+        modal.style.display = 'none';
+        setTimeout(() => modal.remove(), 300);
+    }
+    
+    // Refresh currency displays after closing
+    refreshCurrencyDisplay();
+    
+    // Re-attach event listeners to ensure they work
+    attachCurrencyEventListeners();
 }
 
 /**
@@ -709,9 +612,11 @@ function addCurrencySelector() {
         </option>
     `).join('');
     
-    // Add currency selector to payment form
+    // Add currency selector to payment form - check if already exists
     const paymentEntrySection = document.getElementById('payment-entry-section');
-    if (paymentEntrySection && !document.getElementById('payment-currency-selector')) {
+    const existingPaymentCurrency = document.getElementById('payment-currency-selector');
+    
+    if (paymentEntrySection && !existingPaymentCurrency) {
         const currencySelector = document.createElement('div');
         currencySelector.id = 'payment-currency-selector';
         currencySelector.className = 'currency-selector';
@@ -723,15 +628,19 @@ function addCurrencySelector() {
             <select id="payment-currency" class="currency-select" style="padding: 0.8rem; font-size: 1.4rem; border: var(--border); border-radius: 0.5rem; background: var(--bg-color); min-width: 180px;">
                 ${currencyOptions}
             </select>
+            <span id="payment-conversion-info" class="conversion-info" style="font-size: 1.2rem; color: var(--light-color);"></span>
         `;
         
         // Insert at the beginning of entry section
         paymentEntrySection.insertBefore(currencySelector, paymentEntrySection.firstChild);
+        console.log('Payment currency selector added');
     }
     
-    // Add currency selector to receipt form
+    // Add currency selector to receipt form - check if already exists
     const receiptEntrySection = document.getElementById('receipt-entry-section');
-    if (receiptEntrySection && !document.getElementById('receipt-currency-selector')) {
+    const existingReceiptCurrency = document.getElementById('receipt-currency-selector');
+    
+    if (receiptEntrySection && !existingReceiptCurrency) {
         const currencySelector = document.createElement('div');
         currencySelector.id = 'receipt-currency-selector';
         currencySelector.className = 'currency-selector';
@@ -743,43 +652,139 @@ function addCurrencySelector() {
             <select id="receipt-currency" class="currency-select" style="padding: 0.8rem; font-size: 1.4rem; border: var(--border); border-radius: 0.5rem; background: var(--bg-color); min-width: 180px;">
                 ${currencyOptions}
             </select>
+            <span id="receipt-conversion-info" class="conversion-info" style="font-size: 1.2rem; color: var(--light-color);"></span>
         `;
         
         receiptEntrySection.insertBefore(currencySelector, receiptEntrySection.firstChild);
+        console.log('Receipt currency selector added');
     }
     
-    console.log('Currency selectors added with', Object.keys(currencies).length, 'currencies');
+    // Attach event listeners after adding selectors
+    attachCurrencyEventListeners();
 }
+
+/**
+ * Attach event listeners to currency selectors
+ */
+function attachCurrencyEventListeners() {
+    // Payment currency listener
+    const paymentCurrency = document.getElementById('payment-currency');
+    const paymentAmount = document.getElementById('payment-amount');
+    
+    if (paymentCurrency) {
+        // Remove existing listeners to avoid duplicates
+        const newPaymentCurrency = paymentCurrency.cloneNode(true);
+        paymentCurrency.parentNode.replaceChild(newPaymentCurrency, paymentCurrency);
+        
+        newPaymentCurrency.addEventListener('change', function() {
+            console.log('Payment currency changed to:', this.value);
+            handleCurrencyChange('payment');
+        });
+        
+        // Store reference
+        window.paymentCurrencySelect = newPaymentCurrency;
+    }
+    
+    if (paymentAmount) {
+        const newPaymentAmount = paymentAmount.cloneNode(true);
+        paymentAmount.parentNode.replaceChild(newPaymentAmount, paymentAmount);
+        
+        newPaymentAmount.addEventListener('input', function() {
+            handleCurrencyChange('payment');
+        });
+        
+        window.paymentAmountInput = newPaymentAmount;
+    }
+    
+    // Receipt currency listener
+    const receiptCurrency = document.getElementById('receipt-currency');
+    const receiptAmount = document.getElementById('receipt-amount');
+    
+    if (receiptCurrency) {
+        const newReceiptCurrency = receiptCurrency.cloneNode(true);
+        receiptCurrency.parentNode.replaceChild(newReceiptCurrency, receiptCurrency);
+        
+        newReceiptCurrency.addEventListener('change', function() {
+            console.log('Receipt currency changed to:', this.value);
+            handleCurrencyChange('receipt');
+        });
+        
+        window.receiptCurrencySelect = newReceiptCurrency;
+    }
+    
+    if (receiptAmount) {
+        const newReceiptAmount = receiptAmount.cloneNode(true);
+        receiptAmount.parentNode.replaceChild(newReceiptAmount, receiptAmount);
+        
+        newReceiptAmount.addEventListener('input', function() {
+            handleCurrencyChange('receipt');
+        });
+        
+        window.receiptAmountInput = newReceiptAmount;
+    }
+    
+    console.log('Currency event listeners attached');
+}
+
+
 /**
  * Handle currency change in forms
  */
 function handleCurrencyChange(type) {
+    console.log('handleCurrencyChange called for:', type);
+    
     const currencySelect = document.getElementById(`${type}-currency`);
     const amountInput = document.getElementById(`${type}-amount`);
     const conversionInfo = document.getElementById(`${type}-conversion-info`);
     
-    if (!currencySelect || !amountInput) return;
+    if (!currencySelect) {
+        console.log(`${type}-currency not found`);
+        return;
+    }
+    
+    if (!amountInput) {
+        console.log(`${type}-amount not found`);
+        return;
+    }
     
     const amount = parseFloat(amountInput.value);
     const currency = currencySelect.value;
     
+    console.log(`Amount: ${amount}, Currency: ${currency}`);
+    
     if (isNaN(amount) || amount <= 0) {
-        if (conversionInfo) conversionInfo.innerHTML = '';
+        if (conversionInfo) {
+            conversionInfo.innerHTML = '';
+            conversionInfo.style.display = 'none';
+        }
+        return;
+    }
+    
+    // Get the selected currency rate
+    const selectedCurrency = currencies[currency];
+    const displayCurrency = currencies[currencySettings.displayCurrency];
+    
+    if (!selectedCurrency) {
+        console.log('Currency not found:', currency);
         return;
     }
     
     // Convert to display currency
     const converted = convertCurrency(amount, currency, currencySettings.displayCurrency);
     
+    console.log(`Converted: ${amount} ${currency} = ${converted} ${currencySettings.displayCurrency}`);
+    
     // Show conversion info
     if (conversionInfo && converted !== amount) {
         conversionInfo.innerHTML = `
             <i class="fas fa-exchange-alt"></i> 
             ≈ ${formatCurrency(converted, currencySettings.displayCurrency)}
-            <small style="color: var(--light-color);"> (1 ${currency} = ${currencies[currency].rate} ${currencySettings.baseCurrency})</small>
+            <small style="color: var(--light-color);"> (1 ${currency} = ${selectedCurrency.rate.toFixed(4)} ${currencySettings.baseCurrency})</small>
         `;
+        conversionInfo.style.display = 'block';
     } else if (conversionInfo) {
         conversionInfo.innerHTML = '';
+        conversionInfo.style.display = 'none';
     }
 }
 
@@ -798,23 +803,17 @@ function initCurrencySystem() {
     // Add currency selector to forms
     addCurrencySelector();
     
-    // Add event listeners to amount inputs
+    // Also add event listeners to existing amount inputs (as fallback)
     const paymentAmount = document.getElementById('payment-amount');
     const receiptAmount = document.getElementById('receipt-amount');
-    const paymentCurrency = document.getElementById('payment-currency');
-    const receiptCurrency = document.getElementById('receipt-currency');
     
-    if (paymentAmount) {
+    if (paymentAmount && !paymentAmount.hasListener) {
         paymentAmount.addEventListener('input', () => handleCurrencyChange('payment'));
+        paymentAmount.hasListener = true;
     }
-    if (receiptAmount) {
+    if (receiptAmount && !receiptAmount.hasListener) {
         receiptAmount.addEventListener('input', () => handleCurrencyChange('receipt'));
-    }
-    if (paymentCurrency) {
-        paymentCurrency.addEventListener('change', () => handleCurrencyChange('payment'));
-    }
-    if (receiptCurrency) {
-        receiptCurrency.addEventListener('change', () => handleCurrencyChange('receipt'));
+        receiptAmount.hasListener = true;
     }
     
     // Update all currency displays
@@ -823,8 +822,28 @@ function initCurrencySystem() {
     // Add currency button to header
     addCurrencyButton();
     
+    // Also update the currency display in the button
+    updateCurrencyButtonDisplay();
+    
     console.log('Multi-currency system initialized');
 }
+
+/**
+ * Update the currency button display
+ */
+function updateCurrencyButtonDisplay() {
+    const currencyCodeSpan = document.getElementById('current-currency-code');
+    if (currencyCodeSpan) {
+        currencyCodeSpan.textContent = currencySettings.displayCurrency;
+    }
+    
+    const currencyBtn = document.getElementById('currency-btn');
+    if (currencyBtn) {
+        const symbol = currencies[currencySettings.displayCurrency]?.symbol || '৳';
+        currencyBtn.title = `Currency: ${currencySettings.displayCurrency} (Click to change)`;
+    }
+}
+
 
 /**
  * Add currency button to header
@@ -1775,7 +1794,7 @@ function updateBankDropdowns() {
         if (bankSelect) {
             let options = '<option value="">-- select bank --</option>';
             
-            // NEW: Only show banks that have account numbers
+            // Only show banks that have account numbers
             const banksWithAccounts = banks.filter(bank => bank.accountNo && bank.accountNo.trim() !== '');
             
             banksWithAccounts.forEach(bank => {
@@ -1977,6 +1996,8 @@ function createNewBank() {
     const bankSelect = document.getElementById(`${entryType}-bank`);
     const bankInput = document.getElementById(`${entryType}-bank-input`);
     const bankHidden = document.getElementById(`${entryType}-bank`);
+    const entrySection = document.getElementById(`${entryType}-entry-section`);
+    const actionBtns = document.querySelector(`#${entryType} .action-btns`);
     
     if (bankSelect) {
         bankSelect.value = bankNameForStorage;
@@ -1991,14 +2012,32 @@ function createNewBank() {
         bankHidden.value = bankNameForStorage;
     }
     
-    // Also set the account number field
+    // Also set the account number field if it exists
     const accountField = document.getElementById(`${entryType}-account`);
     if (accountField) {
         accountField.value = accountNo;
     }
     
-    handleBankSelect(entryType);
+    // Show the entry section now that a bank is selected
+    if (entrySection) {
+        entrySection.style.display = 'block';
+        if (typeof updateSubGroupDatalist === 'function') {
+            updateSubGroupDatalist(entryType);
+        }
+    }
+    if (actionBtns) actionBtns.style.display = 'none';
+    
+    // Show bank balance
+    showBalanceAboveAmount(entryType, 'bank', bankNameForStorage);
+    
+    // Close modal
     closeBankModal();
+    
+    // Focus on ledger input
+    setTimeout(() => {
+        const ledgerInput = document.getElementById(`${entryType}-ledger-input`);
+        if (ledgerInput) ledgerInput.focus();
+    }, 200);
 }
 
 function isValidBank(bank) {
@@ -2006,28 +2045,42 @@ function isValidBank(bank) {
 }
 
 function handleBankSelect(type) {
+    console.log('handleBankSelect called for:', type);
+    
     const bankHidden = document.getElementById(`${type}-bank`);
     const bankInput = document.getElementById(`${type}-bank-input`);
     const entrySection = document.getElementById(`${type}-entry-section`);
+    const actionBtns = document.querySelector(`#${type} .action-btns`);
     
-    if (!bankHidden) return;
+    if (!bankHidden) {
+        console.log('bankHidden not found');
+        return;
+    }
+    
+    console.log('bankHidden.value:', bankHidden.value);
     
     let selectedBank = null;
     
     if (bankHidden.value) {
         selectedBank = banks.find(b => b.name === bankHidden.value);
+        console.log('Found by name:', selectedBank);
     } else if (bankInput && bankInput.value) {
         selectedBank = banks.find(b => 
             b.displayNameWithAccount === bankInput.value ||
             `${b.displayName} (${b.accountNo})` === bankInput.value ||
-            b.displayName === bankInput.value
+            b.displayName === bankInput.value ||
+            b.name === bankInput.value
         );
         if (selectedBank) {
             bankHidden.value = selectedBank.name;
+            console.log('Found by input:', selectedBank);
         }
     }
     
-    if (selectedBank) {
+    // Check if selected bank is valid (has account number)
+    if (selectedBank && selectedBank.accountNo && selectedBank.accountNo.trim() !== '') {
+        console.log('Valid bank selected:', selectedBank.name);
+        
         // Update the bank input display
         if (bankInput) {
             const displayText = selectedBank.displayNameWithAccount || 
@@ -2035,18 +2088,47 @@ function handleBankSelect(type) {
             bankInput.value = displayText;
         }
         
-        // Show entry section
-        if (entrySection) entrySection.style.display = 'block';
+        // SHOW THE ENTRY SECTION
+        if (entrySection) {
+            entrySection.style.display = 'block';
+            console.log('Entry section displayed');
+            
+            // Update subgroup datalist
+            if (typeof updateSubGroupDatalist === 'function') {
+                updateSubGroupDatalist(type);
+            }
+        } else {
+            console.log('entrySection not found');
+        }
+        
+        // Hide action buttons initially (they will show when amount is entered)
+        if (actionBtns) actionBtns.style.display = 'none';
         
         // Show bank balance
         showBalanceAboveAmount(type, 'bank', selectedBank.name);
         
         // Focus on ledger input
         setTimeout(() => {
-            document.getElementById(`${type}-ledger-input`).focus();
-        }, 100);
+            const ledgerInput = document.getElementById(`${type}-ledger-input`);
+            if (ledgerInput) {
+                ledgerInput.focus();
+                console.log('Ledger input focused');
+            } else {
+                console.log('Ledger input not found');
+            }
+        }, 200);
+        
     } else {
+        console.log('No valid bank selected');
+        // No valid bank selected - hide entry section
         if (entrySection) entrySection.style.display = 'none';
+        if (actionBtns) actionBtns.style.display = 'none';
+        
+        // If bankInput has value but no matching bank, clear it
+        if (bankInput && bankInput.value && !selectedBank) {
+            bankInput.value = '';
+            bankHidden.value = '';
+        }
     }
 }
 
@@ -2071,69 +2153,146 @@ function initBankSearchable(type) {
         console.log('Banks not loaded yet, skipping initialization');
         return;
     }
+    
     const bankInput = document.getElementById(`${type}-bank-input`);
     const bankHidden = document.getElementById(`${type}-bank`);
     const bankList = document.getElementById(`${type}-bank-list`);
     
-    if (!bankInput || !bankHidden || !bankList) return;
+    if (!bankInput || !bankHidden || !bankList) {
+        console.log('Bank elements not found for type:', type);
+        return;
+    }
+    
+    console.log('Initializing bank searchable for:', type);
     
     // Populate datalist
     updateBankDatalist(type);
     
-    // Handle input
-    bankInput.addEventListener('input', function() {
-        const value = this.value;
+    // Remove existing event listeners by cloning
+    const newBankInput = bankInput.cloneNode(true);
+    bankInput.parentNode.replaceChild(newBankInput, bankInput);
+    
+    // Re-get references
+    const freshBankInput = document.getElementById(`${type}-bank-input`);
+    const freshBankHidden = document.getElementById(`${type}-bank`);
+    
+    // Handle input - search as you type
+    freshBankInput.addEventListener('input', function() {
+        const value = this.value.toLowerCase();
         const matchedBank = banks.find(b => 
-            b.displayName.toLowerCase().includes(value.toLowerCase()) ||
-            b.name.toLowerCase().includes(value.toLowerCase())
+            (b.displayName && b.displayName.toLowerCase().includes(value)) ||
+            (b.name && b.name.toLowerCase().includes(value))
         );
         
         if (matchedBank) {
-            bankHidden.value = matchedBank.name;
+            freshBankHidden.value = matchedBank.name;
+            console.log('Matched bank on input:', matchedBank.name);
+        } else {
+            freshBankHidden.value = '';
         }
     });
     
     // Handle selection from datalist
-    bankInput.addEventListener('change', function() {
+    freshBankInput.addEventListener('change', function() {
         const value = this.value;
+        console.log('Bank change event, value:', value);
+        
         const matchedBank = banks.find(b => 
             b.displayName === value || 
             b.name === value ||
-            b.displayName.toLowerCase() === value.toLowerCase() ||
-            b.name.toLowerCase() === value.toLowerCase()
+            b.displayNameWithAccount === value ||
+            (b.displayName && b.displayName.toLowerCase() === value.toLowerCase()) ||
+            (b.name && b.name.toLowerCase() === value.toLowerCase())
         );
         
         if (matchedBank) {
-            bankHidden.value = matchedBank.name;
-            bankInput.value = matchedBank.displayName || matchedBank.name;
+            console.log('Matched bank on change:', matchedBank.name);
+            freshBankHidden.value = matchedBank.name;
+            // Update display with account number
+            if (matchedBank.accountNo) {
+                freshBankInput.value = matchedBank.displayNameWithAccount || `${matchedBank.displayName || matchedBank.name} (${matchedBank.accountNo})`;
+            } else {
+                freshBankInput.value = matchedBank.displayName || matchedBank.name;
+            }
+            // IMPORTANT: Call handleBankSelect to show the entry section
             handleBankSelect(type);
+        } else {
+            console.log('No match found for:', value);
+            freshBankHidden.value = '';
         }
     });
     
-    // Handle blur
-    bankInput.addEventListener('blur', function() {
-        if (!bankHidden.value) {
-            // Try to find match
-            const value = this.value;
+    // Handle blur - try to match if input has value
+    freshBankInput.addEventListener('blur', function() {
+        if (!freshBankHidden.value && this.value) {
             const matchedBank = banks.find(b => 
-                b.displayName.toLowerCase().includes(value.toLowerCase()) ||
-                b.name.toLowerCase().includes(value.toLowerCase())
+                (b.displayName && b.displayName.toLowerCase() === this.value.toLowerCase()) ||
+                (b.name && b.name.toLowerCase() === this.value.toLowerCase())
             );
             
             if (matchedBank) {
-                bankHidden.value = matchedBank.name;
-                bankInput.value = matchedBank.displayName || matchedBank.name;
+                console.log('Matched bank on blur:', matchedBank.name);
+                freshBankHidden.value = matchedBank.name;
+                if (matchedBank.accountNo) {
+                    this.value = matchedBank.displayNameWithAccount || `${matchedBank.displayName || matchedBank.name} (${matchedBank.accountNo})`;
+                } else {
+                    this.value = matchedBank.displayName || matchedBank.name;
+                }
                 handleBankSelect(type);
             }
         }
     });
     
     // Handle keyboard navigation
-    bankInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && bankHidden.value) {
+    freshBankInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
             e.preventDefault();
-            const accountInput = document.getElementById(`${type}-account`);
-            if (accountInput) accountInput.focus();
+            console.log('Enter pressed on bank input');
+            
+            if (freshBankHidden.value) {
+                // Check if the selected bank has an account number
+                const selectedBank = banks.find(b => b.name === freshBankHidden.value);
+                if (selectedBank && selectedBank.accountNo && selectedBank.accountNo.trim() !== '') {
+                    // Call handleBankSelect to show entry section
+                    handleBankSelect(type);
+                    // Then focus on ledger input
+                    setTimeout(() => {
+                        const ledgerInput = document.getElementById(`${type}-ledger-input`);
+                        if (ledgerInput && isElementVisible(ledgerInput)) {
+                            ledgerInput.focus();
+                            highlightElement(ledgerInput);
+                        }
+                    }, 100);
+                } else {
+                    showNewBankModal(type);
+                }
+            } else if (freshBankInput.value) {
+                // Try to find a matching bank
+                const matchedBank = banks.find(b => 
+                    (b.displayName && b.displayName.toLowerCase().includes(freshBankInput.value.toLowerCase())) ||
+                    (b.name && b.name.toLowerCase().includes(freshBankInput.value.toLowerCase()))
+                );
+                if (matchedBank && matchedBank.accountNo && matchedBank.accountNo.trim() !== '') {
+                    freshBankHidden.value = matchedBank.name;
+                    if (matchedBank.accountNo) {
+                        freshBankInput.value = matchedBank.displayNameWithAccount || `${matchedBank.displayName || matchedBank.name} (${matchedBank.accountNo})`;
+                    } else {
+                        freshBankInput.value = matchedBank.displayName || matchedBank.name;
+                    }
+                    handleBankSelect(type);
+                    setTimeout(() => {
+                        const ledgerInput = document.getElementById(`${type}-ledger-input`);
+                        if (ledgerInput && isElementVisible(ledgerInput)) {
+                            ledgerInput.focus();
+                            highlightElement(ledgerInput);
+                        }
+                    }, 100);
+                } else {
+                    showNewBankModal(type);
+                }
+            } else {
+                showNewBankModal(type);
+            }
         }
     });
 }
@@ -2221,8 +2380,10 @@ function updateBankDatalist(type) {
     if (!bankList) return;
     
     let options = '';
-    // NEW: Only show banks that have account numbers
+    // Only show banks that have account numbers
     const banksWithAccounts = banks.filter(bank => bank.accountNo && bank.accountNo.trim() !== '');
+    
+    console.log('Updating bank datalist for', type, 'banks with accounts:', banksWithAccounts.length);
     
     banksWithAccounts.forEach(bank => {
         const displayText = bank.displayNameWithAccount || `${bank.displayName || bank.name} (${bank.accountNo})`;
@@ -2981,6 +3142,13 @@ function handleTypeChange(type) {
     const ledgerHidden = document.getElementById(`${type}-ledger`);
     if (ledgerHidden) ledgerHidden.value = '';
     
+    // Reset bank fields
+    const bankInput = document.getElementById(`${type}-bank-input`);
+    if (bankInput) bankInput.value = '';
+    
+    const bankHidden = document.getElementById(`${type}-bank`);
+    if (bankHidden) bankHidden.value = '';
+    
     if (paymentType === 'cash') {
         // Hide bank section, show entry section
         if (bankSection) bankSection.style.display = 'none';
@@ -3001,10 +3169,28 @@ function handleTypeChange(type) {
         if (entrySection) entrySection.style.display = 'none';
         if (actionBtns) actionBtns.style.display = 'none';
         
-        setTimeout(() => {
-            const bankInput = document.getElementById(`${type}-bank-input`);
-            if (bankInput) bankInput.focus();
-        }, 100);
+        // Check if there are any banks with account numbers
+        const banksWithAccounts = banks.filter(b => b.accountNo && b.accountNo.trim() !== '');
+        
+        if (banksWithAccounts.length === 0) {
+            // No banks available, prompt to create one
+            setTimeout(() => {
+                const createBank = confirm('No banks available. Would you like to create a bank account now?');
+                if (createBank) {
+                    showNewBankModal(type);
+                } else {
+                    // Switch back to cash
+                    const cashRadio = document.querySelector(`input[name="${type}-type"][value="cash"]`);
+                    if (cashRadio) cashRadio.checked = true;
+                    handleTypeChange(type);
+                }
+            }, 100);
+        } else {
+            setTimeout(() => {
+                const bankInput = document.getElementById(`${type}-bank-input`);
+                if (bankInput) bankInput.focus();
+            }, 100);
+        }
     }
 }
 

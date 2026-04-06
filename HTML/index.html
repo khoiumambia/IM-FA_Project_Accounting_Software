@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khoium's Accounting - Professional Accounting Software</title>
+    <title>AcctBook - Professional Accounting Software</title>
     
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,7 +21,7 @@
     <!-- header section starts -->
     <header class="header">
         <section class="flex">
-            <a href="index.html" class="logo"> <i class="fas fa-calculator"></i> Khoium's Accounting</a>
+            <a href="index.html" class="logo"> <i class="fas fa-calculator"></i> AcctBook</a>
 
             <nav class="navbar">
                 <ul>
@@ -128,24 +128,20 @@
 
                     <!-- Bank Selection (shown only when bank is selected) -->
                     <div id="payment-bank-section" style="display: none;">
-                        <div style="display: flex; gap: 1rem; align-items: center; width: 100%; margin-bottom: 1rem;">
-                            <div style="flex: 2;">
-                                <div class="form-group">
-                                    <label for="payment-bank-input"><i class="fas fa-university"></i> select bank *</label>
-                                    <div class="searchable-select-wrapper">
-                                        <input type="text" 
-                                            id="payment-bank-input" 
-                                            class="searchable-select" 
-                                            placeholder="Type to search bank..." 
-                                            autocomplete="off"
-                                            list="payment-bank-list">
-                                        <datalist id="payment-bank-list"></datalist>
-                                        <input type="hidden" id="payment-bank" name="payment-bank">
-                                        <button type="button" class="new-bank-btn" onclick="showNewBankModal('payment')">
-                                            <i class="fas fa-plus"></i> new bank
-                                        </button>
-                                    </div>
-                                </div>
+                        <div class="form-group">
+                            <label for="payment-bank-input"><i class="fas fa-university"></i> select bank *</label>
+                            <div class="searchable-select-wrapper">
+                                <input type="text" 
+                                    id="payment-bank-input" 
+                                    class="searchable-select" 
+                                    placeholder="Type to search bank..." 
+                                    autocomplete="off"
+                                    list="payment-bank-list">
+                                <datalist id="payment-bank-list"></datalist>
+                                <input type="hidden" id="payment-bank" name="payment-bank">
+                                <button type="button" class="new-bank-btn" onclick="showNewBankModal('payment')">
+                                    <i class="fas fa-plus"></i> new bank
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -153,13 +149,15 @@
                     <!-- Main Entry Row: Ledger + Sub-group + Amount on same line -->
                     <div id="payment-entry-section" style="display: none;">
                         <!-- ===== ADD THIS CURRENCY SELECTOR HERE ===== -->
-                        <div class="currency-selector" id="payment-currency-selector" style="margin-bottom: 1.5rem;">
-                            <label for="payment-currency" style="display: inline-block; margin-right: 1rem; font-size: 1.4rem; color: var(--black);">
+                        <!-- Currency Selector -->
+                        <div class="currency-selector" id="payment-currency-selector" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                            <label for="payment-currency" style="font-size: 1.4rem; color: var(--black); display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-globe"></i> Currency:
                             </label>
-                            <select id="payment-currency" class="currency-select" style="padding: 0.8rem; font-size: 1.4rem; border: var(--border); border-radius: 0.5rem; background: var(--bg-color);">
+                            <select id="payment-currency" class="currency-select" style="padding: 0.8rem; font-size: 1.4rem; border: var(--border); border-radius: 0.5rem; background: var(--bg-color); min-width: 180px;">
                                 <!-- Options will be populated by JavaScript -->
                             </select>
+                            <span id="payment-conversion-info" class="conversion-info" style="font-size: 1.2rem; color: var(--light-color);"></span>
                         </div>
                         <!-- ===== END OF CURRENCY SELECTOR ===== -->
                         <div style="display: flex; gap: 1rem; align-items: flex-end; width: 100%;">
@@ -271,14 +269,15 @@
 
                     <!-- Main Entry Row: Ledger + Sub-group + Amount on same line -->
                     <div id="receipt-entry-section" style="display: none;">
-                        <!-- ===== ADD THIS CURRENCY SELECTOR HERE ===== -->
-                        <div class="currency-selector" id="receipt-currency-selector" style="margin-bottom: 1.5rem;">
-                            <label for="receipt-currency" style="display: inline-block; margin-right: 1rem; font-size: 1.4rem; color: var(--black);">
+                        <!-- Currency Selector -->
+                        <div class="currency-selector" id="receipt-currency-selector" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                            <label for="receipt-currency" style="font-size: 1.4rem; color: var(--black); display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-globe"></i> Currency:
                             </label>
-                            <select id="receipt-currency" class="currency-select" style="padding: 0.8rem; font-size: 1.4rem; border: var(--border); border-radius: 0.5rem; background: var(--bg-color);">
+                            <select id="receipt-currency" class="currency-select" style="padding: 0.8rem; font-size: 1.4rem; border: var(--border); border-radius: 0.5rem; background: var(--bg-color); min-width: 180px;">
                                 <!-- Options will be populated by JavaScript -->
                             </select>
+                            <span id="receipt-conversion-info" class="conversion-info" style="font-size: 1.2rem; color: var(--light-color);"></span>
                         </div>
                         <!-- ===== END OF CURRENCY SELECTOR ===== -->
                         <div style="display: flex; gap: 1rem; align-items: flex-end; width: 100%;">
@@ -727,7 +726,7 @@
                 <a href="#" class="fab fa-instagram"></a>
                 <a href="#" class="fab fa-youtube"></a>
             </div>
-            <div class="credit">&copy; 2026 Khoium's Accounting. All rights reserved.</div>
+            <div class="credit">&copy; 2026 AcctBook. All rights reserved.</div>
         </section>
     </footer>
     <!-- footer section ends -->
