@@ -550,3 +550,22 @@ section{
         font-size: 1.5rem;
     }
 }
+/* Override any conflicting button styles */
+.btn, 
+.save-btn, 
+.cancel-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+}
+
+.action-btns {
+    display: none !important;
+    flex-direction: row !important;
+}
+
+.action-btns.visible,
+.action-btns.show {
+    display: flex !important;
+}

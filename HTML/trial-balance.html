@@ -1,3 +1,4 @@
+<!-- trial-balance.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,7 +141,6 @@
                         <label for="as-of-date"><i class="fas fa-calendar-alt"></i> As of Date:</label>
                         <input type="text" id="as-of-date" class="date-picker" placeholder="Select date" readonly>
                     </div>
-                    <button class="btn" onclick="loadTrialBalance()"><i class="fas fa-search"></i> Load Report</button>
                 </div>
                 <div class="report-actions">
                     <button class="btn" onclick="printReport()"><i class="fas fa-print"></i> Print</button>
@@ -182,7 +182,14 @@
     
 
     <script>
-        // Initialize date picker with enhanced options
+        // Auto-load report when date changes
+        function autoLoadReport() {
+            if (typeof loadTrialBalance === 'function') {
+                loadTrialBalance();
+            }
+        }
+
+        // Initialize date picker with auto-load
         document.addEventListener('DOMContentLoaded', function() {
             // As of date picker
             flatpickr("#as-of-date", {
@@ -195,15 +202,12 @@
                 maxDate: "today",
                 onChange: function(selectedDates, dateStr, instance) {
                     console.log('Selected date:', dateStr);
+                    autoLoadReport();
                 }
             });
 
-            // Auto-load report if date is pre-selected
-            const asOfDate = document.getElementById('as-of-date');
-            if (asOfDate && asOfDate.value && typeof loadTrialBalance === 'function') {
-                // Optional: Auto-load on page load if you want
-                // loadTrialBalance();
-            }
+            // Auto-load on page load
+            setTimeout(autoLoadReport, 100);
         });
     </script>
     <script>

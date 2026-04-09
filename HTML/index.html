@@ -113,15 +113,15 @@
                         </div>
                     </div>
 
-                    <!-- Cash/Bank Options with IDs -->
+                    <!-- Cash/Bank Options -->
                     <div class="form-group">
                         <label><i class="fas fa-money-bill"></i> payment type *</label>
                         <div class="type-options" style="display: flex; gap: 2rem;">
                             <label class="radio-label">
-                                <input type="radio" name="payment-type" value="cash" class="payment-type" checked id="payment-type-cash"> cash
+                                <input type="radio" name="payment-type" value="cash" class="payment-type" checked> cash
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="payment-type" value="bank" class="payment-type" id="payment-type-bank"> bank
+                                <input type="radio" name="payment-type" value="bank" class="payment-type"> bank
                             </label>
                         </div>
                     </div>
@@ -131,12 +131,7 @@
                         <div class="form-group">
                             <label for="payment-bank-input"><i class="fas fa-university"></i> select bank *</label>
                             <div class="searchable-select-wrapper">
-                                <input type="text" 
-                                    id="payment-bank-input" 
-                                    class="searchable-select" 
-                                    placeholder="Type to search bank..." 
-                                    autocomplete="off"
-                                    list="payment-bank-list">
+                                <input type="text" id="payment-bank-input" class="searchable-select" placeholder="Type to search bank..." autocomplete="off" list="payment-bank-list">
                                 <datalist id="payment-bank-list"></datalist>
                                 <input type="hidden" id="payment-bank" name="payment-bank">
                                 <button type="button" class="new-bank-btn" onclick="showNewBankModal('payment')">
@@ -146,55 +141,43 @@
                         </div>
                     </div>
 
-                    <!-- Main Entry Row: Ledger + Sub-group + Amount on same line -->
+                    <!-- Main Entry Section -->
                     <div id="payment-entry-section" style="display: none;">
-                        <!-- ===== ADD THIS CURRENCY SELECTOR HERE ===== -->
+                        
                         <!-- Currency Selector -->
-                        <div class="currency-selector" id="payment-currency-selector" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                            <label for="payment-currency" style="font-size: 1.4rem; color: var(--black); display: flex; align-items: center; gap: 0.5rem;">
+                        <div id="payment-currency-selector" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                            <label for="payment-currency" style="font-size: 1.4rem;">
                                 <i class="fas fa-globe"></i> Currency:
                             </label>
-                            <select id="payment-currency" class="currency-select" style="padding: 0.8rem; font-size: 1.4rem; border: var(--border); border-radius: 0.5rem; background: var(--bg-color); min-width: 180px;">
-                                <!-- Options will be populated by JavaScript -->
+                            <select id="payment-currency" class="currency-select" style="padding: 0.8rem; font-size: 1.4rem; min-width: 180px;">
                             </select>
-                            <span id="payment-conversion-info" class="conversion-info" style="font-size: 1.2rem; color: var(--light-color);"></span>
+                            <span id="payment-conversion-info" style="font-size: 1.2rem;"></span>
                         </div>
-                        <!-- ===== END OF CURRENCY SELECTOR ===== -->
-                        <div style="display: flex; gap: 1rem; align-items: flex-end; width: 100%;">
-                            <!-- Ledger Selection -->
-                            <div style="flex: 2;">
-                                <div class="form-group">
-                                    <label for="payment-ledger-input"><i class="fas fa-book"></i> select ledger *</label>
-                                    <div class="searchable-select-wrapper">
-                                        <input type="text" 
-                                            id="payment-ledger-input" 
-                                            class="searchable-select" 
-                                            placeholder="Type to search ledger..." 
-                                            autocomplete="off"
-                                            list="payment-ledger-list">
-                                        <datalist id="payment-ledger-list"></datalist>
-                                        <input type="hidden" id="payment-ledger" name="payment-ledger">
-                                        <button type="button" class="new-ledger-btn" onclick="showNewLedgerModal('payment')">
-                                            <i class="fas fa-plus"></i> new
-                                        </button>
-                                    </div>
-                                </div>
+                        
+                        <!-- Ledger Selection -->
+                        <div class="form-group">
+                            <label for="payment-ledger-input"><i class="fas fa-book"></i> select ledger *</label>
+                            <div class="searchable-select-wrapper">
+                                <input type="text" id="payment-ledger-input" class="searchable-select" placeholder="Type to search ledger..." autocomplete="off" list="payment-ledger-list">
+                                <datalist id="payment-ledger-list"></datalist>
+                                <input type="hidden" id="payment-ledger" name="payment-ledger">
+                                <button type="button" class="new-ledger-btn" onclick="showNewLedgerModal('payment')">
+                                    <i class="fas fa-plus"></i> new
+                                </button>
                             </div>
-                            
-                            <!-- Amount -->
-                            <div style="flex: 1;">
-                                <div class="form-group">
-                                    <label for="payment-amount"><i class="fas fa-dollar-sign"></i> amount *</label>
-                                    <input type="number" id="payment-amount" placeholder="0.00" min="0" step="0.01">
-                                </div>
-                            </div>
+                        </div>
+                        
+                        <!-- Amount -->
+                        <div class="form-group" id="payment-amount-group">
+                            <label for="payment-amount"><i class="fas fa-dollar-sign"></i> amount *</label>
+                            <input type="number" id="payment-amount" placeholder="0.00" min="0" step="0.01" oninput="handleAmountInput('payment')" onchange="handleAmountInput('payment')">
                         </div>
                         
                         <!-- Hidden field for new ledger name -->
                         <input type="hidden" id="payment-new-ledger" name="payment-new-ledger">
                     </div>
 
-                    <!-- Balance Display (shows above amount) -->
+                    <!-- Balance Display -->
                     <div id="payment-balance-container" style="margin: 1rem 0;"></div>
 
                     <!-- Narration -->
@@ -230,92 +213,71 @@
                         </div>
                     </div>
 
-                    <!-- Cash/Bank Options with IDs -->
+                    <!-- Cash/Bank Options -->
                     <div class="form-group">
                         <label><i class="fas fa-money-bill"></i> receipt type *</label>
                         <div class="type-options" style="display: flex; gap: 2rem;">
                             <label class="radio-label">
-                                <input type="radio" name="receipt-type" value="cash" class="receipt-type" checked id="receipt-type-cash"> cash
+                                <input type="radio" name="receipt-type" value="cash" class="receipt-type" checked> cash
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="receipt-type" value="bank" class="receipt-type" id="receipt-type-bank"> bank
+                                <input type="radio" name="receipt-type" value="bank" class="receipt-type"> bank
                             </label>
                         </div>
                     </div>
 
                     <!-- Bank Selection (shown only when bank is selected) -->
                     <div id="receipt-bank-section" style="display: none;">
-                        <div style="display: flex; gap: 1rem; align-items: center; width: 100%; margin-bottom: 1rem;">
-                            <div style="flex: 2;">
-                                <div class="form-group">
-                                    <label for="receipt-bank-input"><i class="fas fa-university"></i> select bank *</label>
-                                    <div class="searchable-select-wrapper">
-                                        <input type="text" 
-                                            id="receipt-bank-input" 
-                                            class="searchable-select" 
-                                            placeholder="Type to search bank..." 
-                                            autocomplete="off"
-                                            list="receipt-bank-list">
-                                        <datalist id="receipt-bank-list"></datalist>
-                                        <input type="hidden" id="receipt-bank" name="receipt-bank">
-                                        <button type="button" class="new-bank-btn" onclick="showNewBankModal('receipt')">
-                                            <i class="fas fa-plus"></i> new bank
-                                        </button>
-                                    </div>
-                                </div>
+                        <div class="form-group">
+                            <label for="receipt-bank-input"><i class="fas fa-university"></i> select bank *</label>
+                            <div class="searchable-select-wrapper">
+                                <input type="text" id="receipt-bank-input" class="searchable-select" placeholder="Type to search bank..." autocomplete="off" list="receipt-bank-list">
+                                <datalist id="receipt-bank-list"></datalist>
+                                <input type="hidden" id="receipt-bank" name="receipt-bank">
+                                <button type="button" class="new-bank-btn" onclick="showNewBankModal('receipt')">
+                                    <i class="fas fa-plus"></i> new bank
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Main Entry Row: Ledger + Sub-group + Amount on same line -->
+                    <!-- Main Entry Section -->
                     <div id="receipt-entry-section" style="display: none;">
+                        
                         <!-- Currency Selector -->
-                        <div class="currency-selector" id="receipt-currency-selector" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                            <label for="receipt-currency" style="font-size: 1.4rem; color: var(--black); display: flex; align-items: center; gap: 0.5rem;">
+                        <div id="receipt-currency-selector" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                            <label for="receipt-currency" style="font-size: 1.4rem;">
                                 <i class="fas fa-globe"></i> Currency:
                             </label>
-                            <select id="receipt-currency" class="currency-select" style="padding: 0.8rem; font-size: 1.4rem; border: var(--border); border-radius: 0.5rem; background: var(--bg-color); min-width: 180px;">
-                                <!-- Options will be populated by JavaScript -->
+                            <select id="receipt-currency" class="currency-select" style="padding: 0.8rem; font-size: 1.4rem; min-width: 180px;">
                             </select>
-                            <span id="receipt-conversion-info" class="conversion-info" style="font-size: 1.2rem; color: var(--light-color);"></span>
+                            <span id="receipt-conversion-info" style="font-size: 1.2rem;"></span>
                         </div>
-                        <!-- ===== END OF CURRENCY SELECTOR ===== -->
-                        <div style="display: flex; gap: 1rem; align-items: flex-end; width: 100%;">
-                            <!-- Ledger Selection -->
-                            <div style="flex: 2;">
-                                <div class="form-group">
-                                    <label for="receipt-ledger-input"><i class="fas fa-book"></i> select ledger *</label>
-                                    <div class="searchable-select-wrapper">
-                                        <input type="text" 
-                                            id="receipt-ledger-input" 
-                                            class="searchable-select" 
-                                            placeholder="Type to search ledger..." 
-                                            autocomplete="off"
-                                            list="receipt-ledger-list">
-                                        <datalist id="receipt-ledger-list"></datalist>
-                                        <input type="hidden" id="receipt-ledger" name="receipt-ledger">
-                                        <button type="button" class="new-ledger-btn" onclick="showNewLedgerModal('receipt')">
-                                            <i class="fas fa-plus"></i> new
-                                        </button>
-                                    </div>
-                                </div>
+                        
+                        <!-- Ledger Selection -->
+                        <div class="form-group">
+                            <label for="receipt-ledger-input"><i class="fas fa-book"></i> select ledger *</label>
+                            <div class="searchable-select-wrapper">
+                                <input type="text" id="receipt-ledger-input" class="searchable-select" placeholder="Type to search ledger..." autocomplete="off" list="receipt-ledger-list">
+                                <datalist id="receipt-ledger-list"></datalist>
+                                <input type="hidden" id="receipt-ledger" name="receipt-ledger">
+                                <button type="button" class="new-ledger-btn" onclick="showNewLedgerModal('receipt')">
+                                    <i class="fas fa-plus"></i> new
+                                </button>
                             </div>
-                            
-                            
-                            <!-- Amount -->
-                            <div style="flex: 1;">
-                                <div class="form-group">
-                                    <label for="receipt-amount"><i class="fas fa-dollar-sign"></i> amount *</label>
-                                    <input type="number" id="receipt-amount" placeholder="0.00" min="0" step="0.01">
-                                </div>
-                            </div>
+                        </div>
+                        
+                        <!-- Amount -->
+                        <div class="form-group" id="receipt-amount-group">
+                            <label for="receipt-amount"><i class="fas fa-dollar-sign"></i> amount *</label>
+                            <input type="number" id="receipt-amount" placeholder="0.00" min="0" step="0.01" oninput="handleAmountInput('receipt')">
                         </div>
                         
                         <!-- Hidden field for new ledger name -->
                         <input type="hidden" id="receipt-new-ledger" name="receipt-new-ledger">
                     </div>
 
-                    <!-- Balance Display (shows above amount) -->
+                    <!-- Balance Display -->
                     <div id="receipt-balance-container" style="margin: 1rem 0;"></div>
 
                     <!-- Narration -->
@@ -575,11 +537,11 @@
             </div>
         </div>
 
-        <!-- New Bank Modal -->
+<!-- New Bank Modal -->
 <div id="new-bank-modal" class="modal">
     <div class="modal-content">
         <span class="close-modal" onclick="closeBankModal()">&times;</span>
-        <h3><i class="fas fa-plus-circle"></i> create new bank</h3>
+        <h3><i class="fas fa-plus-circle"></i> add bank account</h3>
         <input type="hidden" id="bank-modal-entry-type">
         
         <!-- Bank Name with Searchable Dropdown -->
@@ -592,18 +554,29 @@
                        placeholder="Type to search or enter new bank name..."
                        autocomplete="off"
                        list="bank-name-list">
-                <datalist id="bank-name-list">
-                    <!-- Common bank names will be populated here -->
-                </datalist>
+                <datalist id="bank-name-list"></datalist>
             </div>
             <small style="display: block; color: #666; margin-top: 0.3rem;">
-                <i class="fas fa-info-circle"></i> You can select from existing banks or type a new one
+                <i class="fas fa-info-circle"></i> Select existing bank or type a new one
             </small>
         </div>
         
-        <!-- Account Number (Required) -->
+        <!-- Account Type -->
         <div class="form-group">
-            <label for="modal-bank-account">account number * <span style="color: #dc3545;">(required)</span></label>
+            <label for="modal-account-type">account type *</label>
+            <select id="modal-account-type" style="width: 100%; padding: 1rem; font-size: 1.4rem; border: var(--border); border-radius: 0.5rem;">
+                <option value="Current">Current Account</option>
+                <option value="Savings">Savings Account</option>
+                <option value="Fixed Deposit">Fixed Deposit Account</option>
+                <option value="Loan">Loan Account</option>
+                <option value="Credit Card">Credit Card Account</option>
+                <option value="Other">Other Account</option>
+            </select>
+        </div>
+        
+        <!-- Account Number -->
+        <div class="form-group">
+            <label for="modal-bank-account">account number *</label>
             <input type="text" id="modal-bank-account" placeholder="enter account number">
             <small style="display: block; color: #666; margin-top: 0.3rem;">
                 <i class="fas fa-credit-card"></i> This will appear next to the bank name in dropdowns
@@ -611,7 +584,7 @@
         </div>
         
         <div class="modal-btns">
-            <button type="button" class="save-btn" onclick="createNewBank()"><i class="fas fa-check"></i> create</button>
+            <button type="button" class="save-btn" onclick="createNewBank()"><i class="fas fa-check"></i> add account</button>
             <button type="button" class="cancel-btn" onclick="closeBankModal()"><i class="fas fa-times"></i> cancel</button>
         </div>
     </div>

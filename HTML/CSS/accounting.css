@@ -1047,12 +1047,12 @@ section{
 
 /* Debit/Credit colors */
 .debit-amount {
-    color: var(--secondary-color);
+    color: var(--black);
     font-weight: 600;
 }
 
 .credit-amount {
-    color: #dc2626;
+    color: var(--black);
     font-weight: 600;
 }
 
@@ -2641,4 +2641,73 @@ kbd {
 /* For the payment/receipt form */
 .searchable-select-wrapper .new-ledger-btn {
     margin-left: 0.5rem;
+}
+/* Action Buttons - CRITICAL FIX */
+.action-btns {
+    display: none !important;  /* Hidden by default with important */
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: var(--border);
+}
+
+.action-btns.show,
+.action-btns[style*="display: flex"] {
+    display: flex !important;  /* Force show when JavaScript sets it */
+}
+
+/* Make sure buttons are visible */
+.action-btns .save-btn,
+.action-btns .cancel-btn {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Payment and Receipt specific */
+#payment .action-btns,
+#receipt .action-btns {
+    display: none !important;
+}
+
+#payment .action-btns.show,
+#payment .action-btns[style*="display: flex"],
+#receipt .action-btns.show,
+#receipt .action-btns[style*="display: flex"] {
+    display: flex !important;
+}
+/* Journal save button styles */
+#journal .action-btns {
+    display: flex !important;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: var(--border);
+}
+
+#journal .save-btn {
+    background: var(--main-color);
+    color: var(--white);
+    transition: all 0.3s ease;
+}
+
+#journal .save-btn:hover:not(:disabled) {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+#journal .save-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#journal .cancel-btn {
+    background: #f1f5f9;
+    color: var(--light-color);
+    transition: all 0.3s ease;
+}
+
+#journal .cancel-btn:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
 }

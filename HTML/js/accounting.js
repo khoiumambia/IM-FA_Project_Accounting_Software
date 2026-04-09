@@ -7,13 +7,13 @@ let ledgers = JSON.parse(localStorage.getItem('ledgers')) || [
     { id: 1, name: 'cash', type: 'asset', category: 'cash', group: 'current_asset' },
     
     // Accounts Receivable
-    { id: 2, name: 'accounts receivable', type: 'asset', category: 'receivable', group: 'receivable' },
+    { id: 2, name: 'accounts receivable', type: 'asset', category: 'receivable', group: 'current_asset' },
     
     // Inventory
-    { id: 3, name: 'inventory', type: 'asset', category: 'inventory', group: 'inventory' },
+    { id: 3, name: 'inventory', type: 'asset', category: 'inventory', group: 'current_asset' },
     
     // Prepaid Expenses
-    { id: 4, name: 'prepaid expenses', type: 'asset', category: 'prepaid', group: 'prepaid' },
+    { id: 4, name: 'prepaid expenses', type: 'asset', category: 'prepaid', group: 'current_asset' },
     
     // Fixed Assets
     { id: 5, name: 'fixed assets', type: 'asset', category: 'fixed', group: 'fixed_asset' },
@@ -26,16 +26,16 @@ let ledgers = JSON.parse(localStorage.getItem('ledgers')) || [
     
     // ==================== LIABILITY ACCOUNTS ====================
     // Current Liabilities
-    { id: 9, name: 'accounts payable', type: 'liability', category: 'payable', group: 'payable' },
-    { id: 10, name: 'accrued expenses', type: 'liability', category: 'accrued', group: 'accrued' },
-    { id: 11, name: 'unearned revenue', type: 'liability', category: 'unearned', group: 'unearned' },
-    { id: 12, name: 'tax payable', type: 'liability', category: 'tax', group: 'tax_payable' },
-    { id: 13, name: 'vat payable', type: 'liability', category: 'tax', group: 'tax_payable' },
+    { id: 9, name: 'accounts payable', type: 'liability', category: 'payable', group: 'current_liabilities' },
+    { id: 10, name: 'accrued expenses', type: 'liability', category: 'accrued', group: 'current_liabilities' },
+    { id: 11, name: 'unearned revenue', type: 'liability', category: 'unearned', group: 'current_liabilities' },
+    { id: 12, name: 'tax payable', type: 'liability', category: 'tax', group: 'current_liabilities' },
+    { id: 13, name: 'vat payable', type: 'liability', category: 'tax', group: 'current_liabilities' },
     
     // Long Term Liabilities
-    { id: 14, name: 'loans payable', type: 'liability', category: 'loan', group: 'loan' },
-    { id: 15, name: 'bank loans', type: 'liability', category: 'loan', group: 'loan' },
-    { id: 16, name: 'notes payable', type: 'liability', category: 'loan', group: 'loan' },
+    { id: 14, name: 'loans payable', type: 'liability', category: 'loan', group: 'non_current_liabilities' },
+    { id: 15, name: 'bank loans', type: 'liability', category: 'loan', group: 'non_current_liabilities' },
+    { id: 16, name: 'notes payable', type: 'liability', category: 'loan', group: 'non_current_liabilities' },
     
     
     // ==================== INCOME ACCOUNTS ====================
@@ -46,52 +46,52 @@ let ledgers = JSON.parse(localStorage.getItem('ledgers')) || [
     { id: 20, name: 'consulting revenue', type: 'income', category: 'income', group: 'operating_revenue' },
     
     // Other Income
-    { id: 21, name: 'interest income', type: 'income', category: 'income', group: 'interest_income' },
-    { id: 22, name: 'commission income', type: 'income', category: 'income', group: 'commission' },
+    { id: 21, name: 'interest income', type: 'income', category: 'income', group: 'other_income' },
+    { id: 22, name: 'commission income', type: 'income', category: 'income', group: 'other_income' },
     { id: 23, name: 'dividend income', type: 'income', category: 'income', group: 'other_income' },
-    { id: 24, name: 'gain on sale of assets', type: 'income', category: 'income', group: 'gain' },
+    { id: 24, name: 'gain on sale of assets', type: 'income', category: 'income', group: 'other_income' },
     { id: 25, name: 'other income', type: 'income', category: 'income', group: 'other_income' },
     
     
     // ==================== EXPENSE ACCOUNTS ====================
     // Cost of Goods Sold
-    { id: 26, name: 'purchases', type: 'expense', category: 'expense', group: 'cost_of_goods_sold' },
-    { id: 27, name: 'freight in', type: 'expense', category: 'expense', group: 'cost_of_goods_sold' },
+    { id: 26, name: 'purchases', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 27, name: 'freight in', type: 'expense', category: 'expense', group: 'other_expense' },
     
     // Operating Expenses
-    { id: 28, name: 'salary', type: 'expense', category: 'expense', group: 'staff_cost' },
-    { id: 29, name: 'wages', type: 'expense', category: 'expense', group: 'staff_cost' },
-    { id: 30, name: 'bonus', type: 'expense', category: 'expense', group: 'staff_cost' },
-    { id: 31, name: 'rent', type: 'expense', category: 'expense', group: 'rent_utilities' },
-    { id: 32, name: 'utilities', type: 'expense', category: 'expense', group: 'rent_utilities' },
-    { id: 33, name: 'office supplies', type: 'expense', category: 'expense', group: 'office_expenses' },
-    { id: 34, name: 'transportation', type: 'expense', category: 'expense', group: 'travel_conveyance' },
-    { id: 35, name: 'travel', type: 'expense', category: 'expense', group: 'travel_conveyance' },
-    { id: 36, name: 'advertising', type: 'expense', category: 'expense', group: 'marketing' },
-    { id: 37, name: 'marketing', type: 'expense', category: 'expense', group: 'marketing' },
-    { id: 38, name: 'telephone & internet', type: 'expense', category: 'expense', group: 'office_expenses' },
-    { id: 39, name: 'repairs & maintenance', type: 'expense', category: 'expense', group: 'repairs_maintenance' },
-    { id: 40, name: 'insurance', type: 'expense', category: 'expense', group: 'insurance' },
-    { id: 41, name: 'taxes & fees', type: 'expense', category: 'expense', group: 'taxes' },
-    { id: 42, name: 'bank charges', type: 'expense', category: 'expense', group: 'financial_charges' },
-    { id: 43, name: 'depreciation', type: 'expense', category: 'expense', group: 'depreciation' },
-    { id: 44, name: 'amortization', type: 'expense', category: 'expense', group: 'depreciation' },
-    { id: 45, name: 'professional fees', type: 'expense', category: 'expense', group: 'professional_fees' },
-    { id: 46, name: 'legal fees', type: 'expense', category: 'expense', group: 'professional_fees' },
-    { id: 47, name: 'accounting fees', type: 'expense', category: 'expense', group: 'professional_fees' },
-    { id: 48, name: 'interest expense', type: 'expense', category: 'expense', group: 'financial_charges' },
-    { id: 49, name: 'miscellaneous', type: 'expense', category: 'expense', group: 'miscellaneous' },
+    { id: 28, name: 'salary', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 29, name: 'wages', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 30, name: 'bonus', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 31, name: 'rent', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 32, name: 'utilities', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 33, name: 'office supplies', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 34, name: 'transportation', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 35, name: 'travel', type: 'expense', category: 'expense', group: 'other_expense' },
+    { id: 36, name: 'advertising', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 37, name: 'marketing', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 38, name: 'telephone & internet', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 39, name: 'repairs & maintenance', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 40, name: 'insurance', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 41, name: 'taxes & fees', type: 'expense', category: 'expense', group: 'other_expense' },
+    { id: 42, name: 'bank charges', type: 'expense', category: 'expense', group: 'other_expense' },
+    { id: 43, name: 'depreciation', type: 'expense', category: 'expense', group: 'other_expense' },
+    { id: 44, name: 'amortization', type: 'expense', category: 'expense', group: 'other_expense' },
+    { id: 45, name: 'professional fees', type: 'expense', category: 'expense', group: 'other_expense' },
+    { id: 46, name: 'legal fees', type: 'expense', category: 'expense', group: 'other_expense' },
+    { id: 47, name: 'accounting fees', type: 'expense', category: 'expense', group: 'other_expense' },
+    { id: 48, name: 'interest expense', type: 'expense', category: 'expense', group: 'operating_expenses' },
+    { id: 49, name: 'miscellaneous', type: 'expense', category: 'expense', group: 'other_expense' },
     { id: 50, name: 'loss on sale of assets', type: 'expense', category: 'expense', group: 'other_expense' },
     
     
     // ==================== EQUITY ACCOUNTS ====================
-    { id: 51, name: 'capital', type: 'equity', category: 'equity', group: 'capital' },
-    { id: 52, name: 'drawings', type: 'equity', category: 'equity', group: 'drawings' },
+    { id: 51, name: 'capital', type: 'equity', category: 'equity', group: '' },
+    { id: 52, name: 'drawings', type: 'equity', category: 'equity', group: '' },
     { id: 53, name: 'retained earnings', type: 'equity', category: 'equity', group: 'retained_earnings' },
-    { id: 54, name: 'common stock', type: 'equity', category: 'equity', group: 'capital' },
-    { id: 55, name: 'share premium', type: 'equity', category: 'equity', group: 'reserves' },
-    { id: 56, name: 'general reserve', type: 'equity', category: 'equity', group: 'reserves' },
-    { id: 57, name: 'revaluation reserve', type: 'equity', category: 'equity', group: 'reserves' }
+    { id: 54, name: 'common stock', type: 'equity', category: 'equity', group: '' },
+    { id: 55, name: 'share premium', type: 'equity', category: 'equity', group: '' },
+    { id: 56, name: 'general reserve', type: 'equity', category: 'equity', group: '' },
+    { id: 57, name: 'revaluation reserve', type: 'equity', category: 'equity', group: '' }
 ];
 
 // ==================== PROFIT & LOSS GROUPS ====================
@@ -305,6 +305,41 @@ let escHandler = null;
 let existingOnclick = window.onclick;
 let lastRateUpdate = null;
 
+// ==================== USER ROLE MANAGEMENT ====================
+
+// Get current logged in user
+function getCurrentUser() {
+    const user = localStorage.getItem('loggedInUser');
+    if (user) {
+        try {
+            return JSON.parse(user);
+        } catch(e) {
+            return null;
+        }
+    }
+    return null;
+}
+
+// Check if current user is admin
+function isAdmin() {
+    const user = getCurrentUser();
+    return user && user.type === 'admin';
+}
+
+// Check if current user is logged in
+function isLoggedIn() {
+    return getCurrentUser() !== null;
+}
+
+// Show permission denied message
+function showPermissionDenied(message) {
+    message = message || 'Only administrators can perform this action.';
+    if (typeof showNotification === 'function') {
+        showNotification(message, 'error');
+    } else {
+        alert(message);
+    }
+}
 // ==================== CURRENCY FUNCTIONS ====================
 
 /**
@@ -359,6 +394,7 @@ function convertCurrency(amount, fromCurrency, toCurrency) {
 
     return Number(converted.toFixed(currencySettings.decimalPlaces));
 }
+
 /**
  * Update exchange rates for a currency
  * @param {string} currencyCode - Currency to update
@@ -414,15 +450,37 @@ function refreshCurrencyDisplay() {
     updateCurrencySummaries();
     
     // Update any active conversion info
-    const paymentAmount = document.getElementById('payment-amount');
-    if (paymentAmount && paymentAmount.value) {
-        handleCurrencyChange('payment');
-    }
+    // Payment amount input
+const paymentAmount = document.getElementById('payment-amount');
+if (paymentAmount) {
+    // Remove any existing listeners first to avoid duplicates
+paymentAmount.removeEventListener('input', handleAmountInput);
+paymentAmount.addEventListener('input', () => handleAmountInput('payment'));
+
+    const freshPaymentAmount = document.getElementById('payment-amount');
+    freshPaymentAmount.addEventListener('input', function() {
+        handleAmountInput('payment');
+    });
+    freshPaymentAmount.addEventListener('change', function() {
+        handleAmountInput('payment');
+    });
+}
+
+// Receipt amount input
+const receiptAmount = document.getElementById('receipt-amount');
+if (receiptAmount) {
+    // Remove any existing listeners first to avoid duplicates
+    const newReceiptAmount = receiptAmount.cloneNode(true);
+    receiptAmount.parentNode.replaceChild(newReceiptAmount, receiptAmount);
     
-    const receiptAmount = document.getElementById('receipt-amount');
-    if (receiptAmount && receiptAmount.value) {
-        handleCurrencyChange('receipt');
-    }
+    const freshReceiptAmount = document.getElementById('receipt-amount');
+    freshReceiptAmount.addEventListener('input', function() {
+        handleAmountInput('receipt');
+    });
+    freshReceiptAmount.addEventListener('change', function() {
+        handleAmountInput('receipt');
+    });
+}
     
     // Update currency button display
     updateCurrencyButtonDisplay();
@@ -470,25 +528,6 @@ function closeCurrencyModal() {
     
     // Re-attach event listeners to ensure they work
     attachCurrencyEventListeners();
-}
-
-/**
- * Close currency modal
- */
-function closeCurrencyModal() {
-    const modal = document.getElementById('currency-modal');
-
-    // 🔴 REMOVE event listener FIRST
-    if (escHandler) {
-        document.removeEventListener('keydown', escHandler);
-        escHandler = null;
-    }
-
-    // Then handle modal UI
-    if (modal) {
-        modal.style.display = 'none';
-        setTimeout(() => modal.remove(), 300);
-    }
 }
 
 /**
@@ -1404,6 +1443,9 @@ document.addEventListener('DOMContentLoaded', function() {
     updateAllLedgerDropdowns();
     updateBankDropdowns();
     initSearchableSelects();
+    setupEventListeners();
+    setTimeout(checkPaymentFormElements, 1000);
+
     
     // Only reset journal if the container exists
     const journalContainer = document.querySelector('.journal-entries');
@@ -1540,6 +1582,12 @@ function addDeleteAllButton() {
 }
 
 function deleteAllTransactions() {
+    // Check admin permission
+    if (!isAdmin()) {
+        showPermissionDenied('Only administrators can delete all transactions.');
+        return;
+    }
+    
     if (confirm('⚠️ Are you sure you want to delete ALL transactions?\n\nThis action cannot be undone!')) {
         transactions = [];
         localStorage.setItem('transactions', JSON.stringify(transactions));
@@ -1548,17 +1596,33 @@ function deleteAllTransactions() {
         resetForm('payment');
         resetForm('receipt');
         resetJournal();
-        alert('All transactions deleted successfully!');
+        
+        if (typeof showNotification === 'function') {
+            showNotification('All transactions deleted successfully!', 'success');
+        } else {
+            alert('All transactions deleted successfully!');
+        }
     }
 }
 
 function deleteTransaction(transactionId) {
+    // Check admin permission
+    if (!isAdmin()) {
+        showPermissionDenied('Only administrators can delete transactions.');
+        return;
+    }
+    
     if (confirm('Are you sure you want to delete this transaction?')) {
         transactions = transactions.filter(t => t.id !== transactionId);
         localStorage.setItem('transactions', JSON.stringify(transactions));
         displayRecentTransactions();
         updateVoucherNumbers();
-        alert('Transaction deleted successfully!');
+        
+        if (typeof showNotification === 'function') {
+            showNotification('Transaction deleted successfully!', 'success');
+        } else {
+            alert('Transaction deleted successfully!');
+        }
     }
 }
 
@@ -1585,6 +1649,8 @@ function initDatePickers() {
 }
 
 function setupEventListeners() {
+    console.log('Setting up event listeners...');
+    
     // Tab buttons
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -1622,20 +1688,36 @@ function setupEventListeners() {
         });
     }
 
-    // Payment amount input
+    // ========== FIXED: Payment amount input ==========
     const paymentAmount = document.getElementById('payment-amount');
     if (paymentAmount) {
+        console.log('Payment amount input found, attaching listener');
         paymentAmount.addEventListener('input', function() {
+            console.log('Payment amount changed:', this.value);
             handleAmountInput('payment');
         });
+        paymentAmount.addEventListener('change', function() {
+            console.log('Payment amount changed (change event):', this.value);
+            handleAmountInput('payment');
+        });
+    } else {
+        console.error('Payment amount input NOT found!');
     }
 
-    // Receipt amount input
+    // ========== FIXED: Receipt amount input ==========
     const receiptAmount = document.getElementById('receipt-amount');
     if (receiptAmount) {
+        console.log('Receipt amount input found, attaching listener');
         receiptAmount.addEventListener('input', function() {
+            console.log('Receipt amount changed:', this.value);
             handleAmountInput('receipt');
         });
+        receiptAmount.addEventListener('change', function() {
+            console.log('Receipt amount changed (change event):', this.value);
+            handleAmountInput('receipt');
+        });
+    } else {
+        console.error('Receipt amount input NOT found!');
     }
 
     // Payment new ledger input
@@ -1671,56 +1753,47 @@ function setupEventListeners() {
     }
 
     // ===== NARRATION ENTER HANDLING =====
-    // Payment narration - Enter goes to Save button
-const paymentNarration = document.getElementById('payment-narration');
-if (paymentNarration) {
-    paymentNarration.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // Prevent new line
-            // Find and focus the Save button
-            const saveBtn = document.querySelector('#payment .save-btn:not([disabled])');
-            if (saveBtn) {
-                saveBtn.focus();
-                // Highlight the button for visual feedback
-                highlightElement(saveBtn);
+    const paymentNarration = document.getElementById('payment-narration');
+    if (paymentNarration) {
+        paymentNarration.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const saveBtn = document.querySelector('#payment .save-btn:not([disabled])');
+                if (saveBtn) {
+                    saveBtn.focus();
+                    highlightElement(saveBtn);
+                }
             }
-        }
-    });
-}
+        });
+    }
 
-    // Receipt narration - Enter goes to Save button
-const receiptNarration = document.getElementById('receipt-narration');
-if (receiptNarration) {
-    receiptNarration.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // Prevent new line
-            // Find and focus the Save button
-            const saveBtn = document.querySelector('#receipt .save-btn:not([disabled])');
-            if (saveBtn) {
-                saveBtn.focus();
-                // Highlight the button for visual feedback
-                highlightElement(saveBtn);
+    const receiptNarration = document.getElementById('receipt-narration');
+    if (receiptNarration) {
+        receiptNarration.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const saveBtn = document.querySelector('#receipt .save-btn:not([disabled])');
+                if (saveBtn) {
+                    saveBtn.focus();
+                    highlightElement(saveBtn);
+                }
             }
-        }
-    });
-}
+        });
+    }
 
-    // Journal narration - Enter goes to Save button
-const journalNarration = document.getElementById('journal-narration');
-if (journalNarration) {
-    journalNarration.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // Prevent new line
-            // Find and focus the Save button
-            const saveBtn = document.querySelector('#journal .save-btn:not([disabled])');
-            if (saveBtn) {
-                saveBtn.focus();
-                // Highlight the button for visual feedback
-                highlightElement(saveBtn);
+    const journalNarration = document.getElementById('journal-narration');
+    if (journalNarration) {
+        journalNarration.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const saveBtn = document.querySelector('#journal .save-btn:not([disabled])');
+                if (saveBtn) {
+                    saveBtn.focus();
+                    highlightElement(saveBtn);
+                }
             }
-        }
-    });
-}
+        });
+    }
 
     // Navigation menu clicks
     document.querySelector('.nav-payment')?.addEventListener('click', (e) => {
@@ -1744,6 +1817,8 @@ if (journalNarration) {
         paymentSaveBtn.addEventListener('click', function() {
             saveEntry('payment');
         });
+    } else {
+        console.log('Payment save button not found yet, will retry');
     }
 
     const receiptSaveBtn = document.querySelector('#receipt .save-btn');
@@ -1751,6 +1826,8 @@ if (journalNarration) {
         receiptSaveBtn.addEventListener('click', function() {
             saveEntry('receipt');
         });
+    } else {
+        console.log('Receipt save button not found yet, will retry');
     }
 
     // Cancel buttons
@@ -1783,6 +1860,8 @@ if (journalNarration) {
             resetJournal();
         });
     }
+    
+    console.log('Event listeners setup complete');
 }
 
 // ==================== BANK FUNCTIONS ====================
@@ -3128,13 +3207,18 @@ function handleTypeChange(type) {
     const bankSection = document.getElementById(`${type}-bank-section`);
     const entrySection = document.getElementById(`${type}-entry-section`);
     const actionBtns = document.querySelector(`#${type} .action-btns`);
+    const amountInput = document.getElementById(`${type}-amount`);
+    
+    console.log(`Payment type selected: ${paymentType}`);
     
     // Remove existing balance display
     removeBalanceAbove(type);
     
     // Reset fields
-    const amountField = document.getElementById(`${type}-amount`);
-    if (amountField) amountField.value = '';
+    if (amountInput) {
+        amountInput.value = '';
+        amountInput.style.display = 'block';
+    }
     
     const ledgerInput = document.getElementById(`${type}-ledger-input`);
     if (ledgerInput) ledgerInput.value = '';
@@ -3149,11 +3233,22 @@ function handleTypeChange(type) {
     const bankHidden = document.getElementById(`${type}-bank`);
     if (bankHidden) bankHidden.value = '';
     
+    // Hide action buttons initially
+    if (actionBtns) {
+        actionBtns.style.display = 'none';
+        actionBtns.classList.remove('show');
+    }
+    
+    // Make sure amount group is visible
+    const amountGroup = document.querySelector(`#${type} .amount-group`);
+    if (amountGroup) {
+        amountGroup.style.display = 'block';
+    }
+    
     if (paymentType === 'cash') {
         // Hide bank section, show entry section
         if (bankSection) bankSection.style.display = 'none';
         if (entrySection) entrySection.style.display = 'block';
-        if (actionBtns) actionBtns.style.display = 'none';
         
         // Show cash balance
         showBalanceAboveAmount(type, 'cash');
@@ -3167,7 +3262,6 @@ function handleTypeChange(type) {
         // Show bank section, hide entry section until bank is selected
         if (bankSection) bankSection.style.display = 'block';
         if (entrySection) entrySection.style.display = 'none';
-        if (actionBtns) actionBtns.style.display = 'none';
         
         // Check if there are any banks with account numbers
         const banksWithAccounts = banks.filter(b => b.accountNo && b.accountNo.trim() !== '');
@@ -3231,41 +3325,100 @@ function filterLedgersByType(type) {
 }
 
 function handleLedgerSelect(type) {
+    console.log(`handleLedgerSelect called for ${type}`);
+    
     const ledgerHidden = document.getElementById(`${type}-ledger`);
-    const amountGroup = document.querySelector(`#${type} .amount-group`);
+    const amountGroup = document.getElementById(`${type}-amount-group`);
     const newLedgerGroup = document.querySelector(`#${type} .new-ledger-group`);
     const actionBtns = document.querySelector(`#${type} .action-btns`);
+    const amountInput = document.getElementById(`${type}-amount`);
     
-    // SAFETY CHECK
-    if (!amountGroup) {
-        console.log('amountGroup not found for', type);
-        return;
-    }
+    console.log(`Amount group element:`, amountGroup);
+    console.log(`Action buttons element:`, actionBtns);
+    console.log(`Ledger hidden value:`, ledgerHidden ? ledgerHidden.value : 'null');
     
-    if(ledgerHidden && ledgerHidden.value) {
+    if (ledgerHidden && ledgerHidden.value) {
+        // Hide new ledger group if visible
         if (newLedgerGroup) newLedgerGroup.style.display = 'none';
-        amountGroup.style.display = 'block';
-        if (actionBtns) actionBtns.style.display = 'none';
         
-        // Make sure subgroup section is visible
-        updateSubGroupDatalist(type);
+        // Show amount group
+        if (amountGroup) {
+            amountGroup.style.display = 'block';
+            console.log(`Amount group displayed`);
+        }
+        
+        // Hide action buttons initially - they will show when amount is entered
+        if (actionBtns) {
+            actionBtns.style.display = 'none';
+            console.log(`Action buttons hidden initially`);
+        }
+        
+        // Check if amount already has a value
+        if (amountInput && amountInput.value && parseFloat(amountInput.value) > 0) {
+            console.log(`Amount already has value: ${amountInput.value}`);
+            if (actionBtns) {
+                actionBtns.style.display = 'flex';
+                console.log(`Action buttons shown because amount exists`);
+            }
+        }
+        
+        // Focus on amount input
+        setTimeout(() => {
+            if (amountInput) amountInput.focus();
+        }, 100);
         
     } else {
-        if (newLedgerGroup) newLedgerGroup.style.display = 'none';
+        // Hide amount group and action buttons
         if (amountGroup) amountGroup.style.display = 'none';
         if (actionBtns) actionBtns.style.display = 'none';
+        if (newLedgerGroup) newLedgerGroup.style.display = 'none';
+    }
+}
+function handleAmountInput(type) {
+    const amountInput = document.getElementById(`${type}-amount`);
+    const amount = amountInput ? parseFloat(amountInput.value) : 0;
+    const actionBtns = document.querySelector(`#${type} .action-btns`);
+    
+    console.log(`🔔🔔🔔 handleAmountInput called for ${type} 🔔🔔🔔`);
+    console.log(`Amount: ${amount}`);
+    console.log(`Action buttons element:`, actionBtns);
+    
+    if (actionBtns) {
+        if (amount > 0) {
+            actionBtns.style.display = 'flex';
+            actionBtns.style.visibility = 'visible';
+            actionBtns.style.opacity = '1';
+            console.log(`✅✅✅ Action buttons SHOWN for ${type} ✅✅✅`);
+        } else {
+            actionBtns.style.display = 'none';
+            console.log(`❌ Action buttons HIDDEN for ${type}`);
+        }
+    } else {
+        console.error(`❌❌❌ Action buttons NOT FOUND for ${type} ❌❌❌`);
+        // Try to find the buttons by another method
+        const saveBtn = document.querySelector(`#${type} .save-btn`);
+        const cancelBtn = document.querySelector(`#${type} .cancel-btn`);
+        if (saveBtn && cancelBtn) {
+            console.log(`Found save and cancel buttons separately, but no wrapper`);
+            // Create wrapper if needed
+            const wrapper = saveBtn.parentElement;
+            if (wrapper && wrapper.classList.contains('action-btns')) {
+                console.log(`Wrapper exists with class action-btns`);
+            } else {
+                console.log(`Buttons are not in an action-btns wrapper`);
+            }
+        }
     }
 }
 
-function handleAmountInput(type) {
-    const amount = document.getElementById(`${type}-amount`).value;
-    const actionBtns = document.querySelector(`#${type} .action-btns`);
-    
-    if(amount && parseFloat(amount) > 0) {
-        actionBtns.style.display = 'flex';
-    } else {
-        actionBtns.style.display = 'none';
-    }
+function checkPaymentFormElements() {
+    console.log('=== CHECKING PAYMENT FORM ELEMENTS ===');
+    console.log('payment-amount:', document.getElementById('payment-amount'));
+    console.log('payment-ledger-input:', document.getElementById('payment-ledger-input'));
+    console.log('payment-ledger:', document.getElementById('payment-ledger'));
+    console.log('action-btns:', document.querySelector('#payment .action-btns'));
+    console.log('payment-entry-section:', document.getElementById('payment-entry-section'));
+    console.log('======================================');
 }
 
 function validateNewLedger(type) {
@@ -3427,12 +3580,23 @@ function closeDeleteLedgerModal() {
 }
 
 function confirmDeleteLedger() {
+    // Check admin permission
+    if (!isAdmin()) {
+        showPermissionDenied('Only administrators can delete ledgers.');
+        closeDeleteLedgerModal();
+        return;
+    }
+    
     const ledgerId = parseInt(document.getElementById('delete-ledger-id').value);
     const ledgerName = document.getElementById('delete-ledger-name').value;
     
     const transactionCount = transactions.filter(t => t.ledger === ledgerName).length;
     if (transactionCount > 0) {
-        alert(`Cannot delete "${ledgerName}" because it has ${transactionCount} transaction(s).`);
+        if (typeof showNotification === 'function') {
+            showNotification(`Cannot delete "${ledgerName}" because it has ${transactionCount} transaction(s).`, 'error');
+        } else {
+            alert(`Cannot delete "${ledgerName}" because it has ${transactionCount} transaction(s).`);
+        }
         closeDeleteLedgerModal();
         loadLedgersList();
         return;
@@ -3445,7 +3609,11 @@ function confirmDeleteLedger() {
     loadLedgersList();
     closeDeleteLedgerModal();
     
-    alert(`Ledger "${ledgerName}" deleted successfully!`);
+    if (typeof showNotification === 'function') {
+        showNotification(`Ledger "${ledgerName}" deleted successfully!`, 'success');
+    } else {
+        alert(`Ledger "${ledgerName}" deleted successfully!`);
+    }
 }
 
 function filterLedgers() {
@@ -3478,14 +3646,13 @@ function isBankLedger(ledger) {
            ledger.name.toLowerCase().startsWith('bank -');
 }
 
-function createJournalRow(isFirstRow = false, amount = '') {
+function createJournalRow(isFirstRow = false) {
     const row = document.createElement('div');
     row.className = 'journal-entry-row';
-    // Set styles for 4 columns (ledger, debit, credit, remove)
     row.style.display = 'grid';
     row.style.gridTemplateColumns = '2fr 1fr 1fr auto';
     row.style.gap = '1rem';
-    row.style.alignItems = 'end';
+    row.style.alignItems = 'center';
     row.style.marginBottom = '1rem';
     row.style.padding = '1.5rem';
     row.style.background = 'var(--bg-color)';
@@ -3494,20 +3661,23 @@ function createJournalRow(isFirstRow = false, amount = '') {
     // Generate unique ID for this row's datalist
     const ledgerUniqueId = 'journal-ledger-list-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
     
-    // Create Ledger Selection
+    // Create Ledger Selection - NO DEFAULT VALUE
     const ledgerContainer = document.createElement('div');
     ledgerContainer.className = 'form-group ledger-select-wrapper';
+    ledgerContainer.style.margin = '0';
     ledgerContainer.innerHTML = `
-        <label>ledger *</label>
-        <div class="searchable-select-wrapper" style="width: 100%;">
+        <label style="font-size: 1.2rem; margin-bottom: 0.3rem; display: block;">ledger *</label>
+        <div class="searchable-select-wrapper" style="width: 100%; display: flex; gap: 0.5rem;">
             <input type="text" 
                    class="journal-ledger-input searchable-select" 
                    placeholder="Type to search ledger..." 
                    autocomplete="off"
-                   list="${ledgerUniqueId}">
+                   list="${ledgerUniqueId}"
+                   value=""
+                   style="flex: 1; padding: 0.8rem; font-size: 1.3rem; border-radius: 0.5rem; border: var(--border);">
             <datalist id="${ledgerUniqueId}" class="journal-ledger-list"></datalist>
-            <input type="hidden" class="journal-ledger-select">
-            <button type="button" class="journal-new-ledger-btn" onclick="showJournalNewLedgerModal(this)">
+            <input type="hidden" class="journal-ledger-select" value="">
+            <button type="button" class="journal-new-ledger-btn" onclick="showJournalNewLedgerModal(this)" style="padding: 0.8rem 1.2rem; background: var(--secondary-color); color: white; border: none; border-radius: 0.5rem; cursor: pointer;">
                 <i class="fas fa-plus"></i> new
             </button>
         </div>
@@ -3516,23 +3686,25 @@ function createJournalRow(isFirstRow = false, amount = '') {
     // Create Debit field
     const debitGroup = document.createElement('div');
     debitGroup.className = 'form-group';
+    debitGroup.style.margin = '0';
     debitGroup.innerHTML = `
-        <label>debit</label>
-        <input type="number" class="journal-debit" value="${amount}" placeholder="0.00" min="0" step="any" oninput="updateJournalTotals(); validateJournalForSave();">
+        <label style="font-size: 1.2rem; margin-bottom: 0.3rem; display: block;">debit</label>
+        <input type="number" class="journal-debit" value="" placeholder="0.00" min="0" step="any" style="width: 100%; padding: 0.8rem; font-size: 1.3rem; border-radius: 0.5rem; border: var(--border);" oninput="updateJournalTotals(); validateJournalForSave();">
     `;
     
-    // Create Credit field
+    // Create Credit field - FIRST ROW has credit DISABLED
     const creditGroup = document.createElement('div');
     creditGroup.className = 'form-group';
+    creditGroup.style.margin = '0';
     if (isFirstRow) {
         creditGroup.innerHTML = `
-            <label>credit</label>
-            <input type="number" class="journal-credit" value="" placeholder="0.00" min="0" step="any" readonly disabled>
+            <label style="font-size: 1.2rem; margin-bottom: 0.3rem; display: block;">credit</label>
+            <input type="number" class="journal-credit" value="" placeholder="0.00" min="0" step="any" style="width: 100%; padding: 0.8rem; font-size: 1.3rem; border-radius: 0.5rem; border: var(--border); background: #e9ecef;" readonly disabled>
         `;
     } else {
         creditGroup.innerHTML = `
-            <label>credit</label>
-            <input type="number" class="journal-credit" value="" placeholder="0.00" min="0" step="any" oninput="updateJournalTotals(); validateJournalForSave();">
+            <label style="font-size: 1.2rem; margin-bottom: 0.3rem; display: block;">credit</label>
+            <input type="number" class="journal-credit" value="" placeholder="0.00" min="0" step="any" style="width: 100%; padding: 0.8rem; font-size: 1.3rem; border-radius: 0.5rem; border: var(--border);" oninput="updateJournalTotals(); validateJournalForSave();">
         `;
     }
     
@@ -3541,8 +3713,16 @@ function createJournalRow(isFirstRow = false, amount = '') {
     removeBtn.type = 'button';
     removeBtn.className = 'remove-row-btn';
     removeBtn.innerHTML = '<i class="fas fa-trash"></i>';
+    removeBtn.style.padding = '0.8rem';
+    removeBtn.style.background = '#dc3545';
+    removeBtn.style.color = 'white';
+    removeBtn.style.border = 'none';
+    removeBtn.style.borderRadius = '0.5rem';
+    removeBtn.style.cursor = 'pointer';
+    removeBtn.style.height = '42px';
+    removeBtn.style.width = '42px';
     removeBtn.onclick = function() { removeJournalRow(this); };
-    removeBtn.style.display = 'none';
+    removeBtn.style.display = isFirstRow ? 'none' : 'block';
     
     // Add all to row
     row.appendChild(ledgerContainer);
@@ -3566,7 +3746,7 @@ function initJournalLedgerRow(row) {
     
     if (!ledgerInput || !ledgerHidden || !ledgerList) return;
     
-    // Populate datalist with ALL ledgers including banks
+    // Populate datalist with ALL ledgers
     let options = '';
     ledgers.forEach(ledger => {
         let displayName = ledger.name;
@@ -3577,89 +3757,46 @@ function initJournalLedgerRow(row) {
     });
     ledgerList.innerHTML = options;
     
+    // Clear any default values
+    ledgerInput.value = '';
+    ledgerHidden.value = '';
+    
     // Handle input - search as you type
     ledgerInput.addEventListener('input', function() {
         const value = this.value.toLowerCase();
-        const matchedLedger = ledgers.find(l => 
-            l.name.toLowerCase().includes(value)
-        );
-        
-        if (matchedLedger) {
-            ledgerHidden.value = matchedLedger.id;
-        }
+        const matchedLedger = ledgers.find(l => l.name.toLowerCase().includes(value));
+        ledgerHidden.value = matchedLedger ? matchedLedger.id : '';
     });
     
     // Handle selection from datalist
     ledgerInput.addEventListener('change', function() {
         const value = this.value;
-        const matchedLedger = ledgers.find(l => 
-            l.name === value || 
-            l.name.toLowerCase() === value.toLowerCase()
-        );
+        const matchedLedger = ledgers.find(l => l.name === value || l.name.toLowerCase() === value.toLowerCase());
         
         if (matchedLedger) {
             ledgerHidden.value = matchedLedger.id;
-            // Display with account number if bank
             if (matchedLedger.category === 'bank' && matchedLedger.accountNo) {
                 ledgerInput.value = `${matchedLedger.name} (${matchedLedger.accountNo})`;
             } else {
                 ledgerInput.value = matchedLedger.name;
             }
             
-            // Focus next field
+            // Focus debit field
             const debitInput = row.querySelector('.journal-debit');
-            if (debitInput) {
-                debitInput.focus();
-            }
-            
+            if (debitInput) debitInput.focus();
             validateJournalForSave();
+        } else {
+            ledgerHidden.value = '';
         }
     });
     
-    // Handle blur - try to match if input has value
-    ledgerInput.addEventListener('blur', function() {
-        if (!ledgerHidden.value && this.value) {
-            const matchedLedger = ledgers.find(l => 
-                l.name.toLowerCase() === this.value.toLowerCase()
-            );
-            
-            if (matchedLedger) {
-                ledgerHidden.value = matchedLedger.id;
-                if (matchedLedger.category === 'bank' && matchedLedger.accountNo) {
-                    this.value = `${matchedLedger.name} (${matchedLedger.accountNo})`;
-                } else {
-                    this.value = matchedLedger.name;
-                }
-            }
-        }
-    });
-    
-    // Handle Enter key - move to debit field
+    // Handle Enter key
     ledgerInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            
             if (ledgerHidden.value) {
                 const debitInput = row.querySelector('.journal-debit');
                 if (debitInput) debitInput.focus();
-            } else {
-                const matchedLedger = ledgers.find(l => 
-                    l.name.toLowerCase().includes(ledgerInput.value.toLowerCase())
-                );
-                
-                if (matchedLedger) {
-                    ledgerHidden.value = matchedLedger.id;
-                    if (matchedLedger.category === 'bank' && matchedLedger.accountNo) {
-                        ledgerInput.value = `${matchedLedger.name} (${matchedLedger.accountNo})`;
-                    } else {
-                        ledgerInput.value = matchedLedger.name;
-                    }
-                    
-                    setTimeout(() => {
-                        const debitInput = row.querySelector('.journal-debit');
-                        if (debitInput) debitInput.focus();
-                    }, 50);
-                }
             }
         }
     });
@@ -4067,26 +4204,34 @@ function showJournalNewLedgerModal(btn) {
 
 function addJournalRow() {
     const container = document.querySelector('.journal-entries');
+    // Create new row with credit ENABLED
     const newRow = createJournalRow(false);
     container.appendChild(newRow);
     
     updateJournalLedgerDropdowns();
     
-    if(document.querySelectorAll('.journal-entry-row').length > 1) {
-        document.querySelectorAll('.remove-row-btn').forEach(btn => {
-            btn.style.display = 'block';
-        });
-    }
+    // Update remove button visibility
+    document.querySelectorAll('.journal-entry-row').forEach((row, index) => {
+        const removeBtn = row.querySelector('.remove-row-btn');
+        if (removeBtn) {
+            removeBtn.style.display = index === 0 ? 'none' : 'block';
+        }
+    });
     
     setTimeout(() => {
-        const ledgerSelect = newRow.querySelector('.journal-ledger-select');
-        if (ledgerSelect) ledgerSelect.focus();
+        const ledgerInput = newRow.querySelector('.journal-ledger-input');
+        if (ledgerInput) ledgerInput.focus();
     }, 100);
     
     validateJournalForSave();
 }
 
 function removeJournalRow(btn) {
+    if (!isAdmin()) {
+        showPermissionDenied('Only administrators can remove journal rows.');
+        return;
+    }
+    
     const row = btn.closest('.journal-entry-row');
     const rows = document.querySelectorAll('.journal-entry-row');
     const isFirstRow = rows[0] === row;
@@ -4096,20 +4241,15 @@ function removeJournalRow(btn) {
         return;
     }
     
-    const prevRow = row.previousElementSibling;
     row.remove();
     
-    if(document.querySelectorAll('.journal-entry-row').length === 1) {
-        const remainingBtn = document.querySelector('.remove-row-btn');
-        if(remainingBtn) remainingBtn.style.display = 'none';
-    }
-    
-    if (prevRow) {
-        setTimeout(() => {
-            const ledgerSelect = prevRow.querySelector('.journal-ledger-select');
-            if (ledgerSelect) ledgerSelect.focus();
-        }, 100);
-    }
+    // Update remove button visibility
+    document.querySelectorAll('.journal-entry-row').forEach((r, index) => {
+        const removeBtn = r.querySelector('.remove-row-btn');
+        if (removeBtn) {
+            removeBtn.style.display = index === 0 ? 'none' : 'block';
+        }
+    });
     
     updateJournalTotals();
     validateJournalForSave();
@@ -4122,24 +4262,31 @@ function updateJournalTotals() {
     document.querySelectorAll('.journal-entry-row').forEach(row => {
         const debit = parseFloat(row.querySelector('.journal-debit')?.value) || 0;
         const credit = parseFloat(row.querySelector('.journal-credit')?.value) || 0;
-        
         totalDebit += debit;
         totalCredit += credit;
     });
     
-    document.getElementById('total-debit').textContent = totalDebit.toFixed(2);
-    document.getElementById('total-credit').textContent = totalCredit.toFixed(2);
-    
     const debitSpan = document.getElementById('total-debit');
     const creditSpan = document.getElementById('total-credit');
     
-    if(Math.abs(totalDebit - totalCredit) > 0.01) {
-        debitSpan.style.color = '#dc3545';
-        creditSpan.style.color = '#dc3545';
-    } else {
-        debitSpan.style.color = 'var(--main-color)';
-        creditSpan.style.color = 'var(--main-color)';
+    if (debitSpan) debitSpan.textContent = totalDebit.toFixed(2);
+    if (creditSpan) creditSpan.textContent = totalCredit.toFixed(2);
+    
+    if (debitSpan && creditSpan) {
+        if (totalDebit === 0 && totalCredit === 0) {
+            debitSpan.style.color = 'var(--main-color)';
+            creditSpan.style.color = 'var(--main-color)';
+        } else if (Math.abs(totalDebit - totalCredit) <= 0.01) {
+            debitSpan.style.color = '#28a745';
+            creditSpan.style.color = '#28a745';
+        } else {
+            debitSpan.style.color = '#dc3545';
+            creditSpan.style.color = '#dc3545';
+        }
     }
+    
+    // Re-validate save button after totals update
+    validateJournalForSave();
 }
 
 function validateJournalForSave() {
@@ -4147,61 +4294,83 @@ function validateJournalForSave() {
     let hasAtLeastOneEntry = false;
     let totalDebit = 0;
     let totalCredit = 0;
+    let firstRowHasDebit = false;
     
-    document.querySelectorAll('.journal-entry-row').forEach((row, index) => {
-        const ledgerSelect = row.querySelector('.journal-ledger-select');
-        const newLedgerInput = row.querySelector('.journal-new-ledger');
+    const rows = document.querySelectorAll('.journal-entry-row');
+    
+    rows.forEach((row, index) => {
+        const ledgerHidden = row.querySelector('.journal-ledger-select');
+        const ledgerInput = row.querySelector('.journal-ledger-input');
         const debit = parseFloat(row.querySelector('.journal-debit')?.value) || 0;
         const credit = parseFloat(row.querySelector('.journal-credit')?.value) || 0;
         
         totalDebit += debit;
         totalCredit += credit;
         
-        const hasLedger = (ledgerSelect && ledgerSelect.value && ledgerSelect.value !== 'new') || 
-                         (newLedgerInput && newLedgerInput.value.trim());
+        // First row must have debit
+        if (index === 0 && debit > 0) firstRowHasDebit = true;
+        
+        const hasLedger = (ledgerHidden && ledgerHidden.value) || (ledgerInput && ledgerInput.value);
         const hasAmount = debit > 0 || credit > 0;
         
-        if (index === 0 && credit > 0) {
-            allValid = false;
-        }
-        
-        if(hasAmount) hasAtLeastOneEntry = true;
-        if(hasAmount && !hasLedger) allValid = false;
+        if (hasAmount) hasAtLeastOneEntry = true;
+        if (hasAmount && !hasLedger) allValid = false;
     });
     
-    const rows = document.querySelectorAll('.journal-entry-row');
-    const hasDebitRow = Array.from(rows).some(row => parseFloat(row.querySelector('.journal-debit')?.value) > 0);
-    
-    const canSaveSingleRow = rows.length === 1 && hasDebitRow && totalDebit > 0 && totalCredit === 0;
-    const canSaveMultiRow = rows.length > 1 && hasDebitRow && totalDebit > 0 && totalCredit > 0 && 
-                           Math.abs(totalDebit - totalCredit) < 0.01;
+    const isBalanced = Math.abs(totalDebit - totalCredit) <= 0.01;
+    const canSave = allValid && hasAtLeastOneEntry && isBalanced && (rows.length === 1 ? firstRowHasDebit : true);
     
     const saveBtn = document.querySelector('#journal .save-btn');
-    if(saveBtn) {
-        const canSave = allValid && hasAtLeastOneEntry && (canSaveSingleRow || canSaveMultiRow);
+    if (saveBtn) {
         saveBtn.disabled = !canSave;
+        if (canSave) {
+            saveBtn.style.opacity = '1';
+            saveBtn.style.cursor = 'pointer';
+            console.log('✅ Journal save button ENABLED');
+        } else {
+            saveBtn.style.opacity = '0.5';
+            saveBtn.style.cursor = 'not-allowed';
+            console.log('❌ Journal save button DISABLED');
+        }
+    } else {
+        console.error('Journal save button not found in DOM!');
     }
 }
 
 function resetJournal() {
-    const container = document.querySelector('.journal-entries');
-    container.innerHTML = '';
+    console.log('Resetting journal form...');
     
-    const firstRow = createJournalRow(true);
-    container.appendChild(firstRow);
+    const container = document.querySelector('.journal-entries');
+    if (container) {
+        container.innerHTML = '';
+        
+        // Create first row with credit DISABLED
+        const firstRow = createJournalRow(true);
+        container.appendChild(firstRow);
+    }
     
     updateJournalLedgerDropdowns();
     updateJournalTotals();
-    document.getElementById('journal-narration').value = '';
     
-    const removeBtn = document.querySelector('.remove-row-btn');
-    if(removeBtn) removeBtn.style.display = 'none';
+    const narrationField = document.getElementById('journal-narration');
+    if (narrationField) narrationField.value = '';
+    
+    // Make sure save button is visible but disabled initially
+    const saveBtn = document.querySelector('#journal .save-btn');
+    if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.style.opacity = '0.5';
+        saveBtn.style.cursor = 'not-allowed';
+    }
     
     validateJournalForSave();
     
     setTimeout(() => {
-        const ledgerSelect = firstRow.querySelector('.journal-ledger-select');
-        if (ledgerSelect) ledgerSelect.focus();
+        const firstRow = document.querySelector('.journal-entry-row');
+        if (firstRow) {
+            const ledgerInput = firstRow.querySelector('.journal-ledger-input');
+            if (ledgerInput) ledgerInput.focus();
+        }
     }, 100);
 }
 
@@ -4744,145 +4913,62 @@ function saveJournal() {
     journalRows.forEach((row, index) => {
         const ledgerHidden = row.querySelector('.journal-ledger-select');
         const ledgerInput = row.querySelector('.journal-ledger-input');
-        const newLedgerInput = row.querySelector('.journal-new-ledger');
         const debit = parseFloat(row.querySelector('.journal-debit')?.value) || 0;
         const credit = parseFloat(row.querySelector('.journal-credit')?.value) || 0;
         
-        // Validate amounts
-        if (debit < 0) {
-            alert(`Row ${index + 1}: Debit amount cannot be negative`);
-            hasErrors = true;
-            return;
-        }
-        
-        if (credit < 0) {
-            alert(`Row ${index + 1}: Credit amount cannot be negative`);
-            hasErrors = true;
-            return;
-        }
-        
-        // First row cannot have credit
-        if (index === 0 && credit > 0) {
-            alert('First row cannot have credit amount');
-            hasErrors = true;
-            return;
-        }
+        // Skip empty rows
+        if (debit === 0 && credit === 0) return;
         
         // Get ledger ID
         let ledgerId = ledgerHidden ? ledgerHidden.value : null;
         
         if (!ledgerId && ledgerInput && ledgerInput.value) {
-            const matchedLedger = ledgers.find(l => 
-                l.name.toLowerCase() === ledgerInput.value.toLowerCase()
-            );
+            const matchedLedger = ledgers.find(l => l.name.toLowerCase() === ledgerInput.value.toLowerCase());
             if (matchedLedger) {
                 ledgerId = matchedLedger.id;
-                if (ledgerHidden) ledgerHidden.value = matchedLedger.id;
             }
         }
         
-        const newLedgerName = newLedgerInput ? newLedgerInput.value.trim() : '';
-        
-        // Skip empty rows
-        if(!ledgerId && !newLedgerName && debit === 0 && credit === 0) return;
-        
-        // Handle new ledger creation
-        if(ledgerId === 'new' || (!ledgerId && newLedgerName)) {
-            if(!newLedgerName) {
-                alert('Please enter a name for the new ledger');
-                hasErrors = true;
-                return;
-            }
-            
-            let existingLedger = ledgers.find(l => l.name.toLowerCase() === newLedgerName.toLowerCase());
-            if(existingLedger) {
-                ledgerId = existingLedger.id;
-            } else {
-                const newLedger = {
-                    id: ledgers.length + 1,
-                    name: newLedgerName.toLowerCase(),
-                    type: 'asset',
-                    category: 'asset',
-                    group: ''
-                };
-                ledgers.push(newLedger);
-                localStorage.setItem('ledgers', JSON.stringify(ledgers));
-                ledgerId = newLedger.id;
-                updateAllLedgerDropdowns();
-            }
-        }
-        
-        // Validate row has ledger and amount
-        if(ledgerId && (debit > 0 || credit > 0)) {
-            const ledger = ledgers.find(l => l.id == ledgerId);
-            if(ledger) {
-                // Get subgroup from the ledger's group
-                let subgroupValue = ledger.group || '';
-                
-                // If still empty, assign a default based on ledger type
-                if (!subgroupValue) {
-                    if (ledger.type === 'income') subgroupValue = 'operating_revenue';
-                    else if (ledger.type === 'expense') subgroupValue = 'operating_expense';
-                    else if (ledger.type === 'asset') subgroupValue = 'current_asset';
-                    else if (ledger.type === 'liability') subgroupValue = 'current_liability';
-                    else if (ledger.type === 'equity') subgroupValue = 'capital';
-                }
-                
-                rows.push({ 
-                    ledger: ledger.name, 
-                    debit: debit, 
-                    credit: credit,
-                    subgroup: subgroupValue
-                });
-                
-                totalDebit += debit;
-                totalCredit += credit;
-            }
-        } else if(ledgerId || debit > 0 || credit > 0) {
-            alert(`Please complete all fields in row ${index + 1}`);
+        if (!ledgerId) {
+            alert(`Row ${index + 1}: Please select a ledger`);
             hasErrors = true;
             return;
         }
+        
+        const ledger = ledgers.find(l => l.id == ledgerId);
+        if (ledger) {
+            let subgroupValue = ledger.group || '';
+            if (!subgroupValue) {
+                if (ledger.type === 'income') subgroupValue = 'operating_revenue';
+                else if (ledger.type === 'expense') subgroupValue = 'operating_expense';
+                else if (ledger.type === 'asset') subgroupValue = 'current_asset';
+                else if (ledger.type === 'liability') subgroupValue = 'current_liability';
+                else if (ledger.type === 'equity') subgroupValue = 'capital';
+            }
+            
+            rows.push({ 
+                ledger: ledger.name, 
+                debit: debit, 
+                credit: credit,
+                subgroup: subgroupValue
+            });
+            
+            totalDebit += debit;
+            totalCredit += credit;
+        }
     });
     
-    if(hasErrors) return;
+    if (hasErrors) return;
     
-    if(rows.length === 0) {
+    if (rows.length === 0) {
         alert('Please add at least one journal entry');
         return;
     }
     
-    // Validate totals
-    if(rows.length === 1) {
-        if(totalDebit === 0) {
-            alert('Please enter a debit amount');
-            return;
-        }
-        if(totalCredit > 0) {
-            alert('Single row cannot have credit amount');
-            return;
-        }
-        
-        const cashLedger = ledgers.find(l => l.name.toLowerCase() === 'cash');
-        if (!cashLedger) {
-            alert('Cash ledger not found! Please create a cash ledger.');
-            return;
-        }
-        
-        rows.push({
-            ledger: cashLedger.name,
-            debit: 0,
-            credit: totalDebit,
-            subgroup: 'current_asset'
-        });
-        
-        totalCredit = totalDebit;
-        
-    } else {
-        if(Math.abs(totalDebit - totalCredit) > 0.01) {
-            alert(`Total debit (${totalDebit.toFixed(2)}) must equal total credit (${totalCredit.toFixed(2)})`);
-            return;
-        }
+    // Validate totals balance
+    if (Math.abs(totalDebit - totalCredit) > 0.01) {
+        alert(`Journal entry is not balanced!\n\nTotal Debit: ${totalDebit.toFixed(2)}\nTotal Credit: ${totalCredit.toFixed(2)}\n\nDebit and Credit must be equal.`);
+        return;
     }
     
     // Create transaction entries
@@ -4898,7 +4984,7 @@ function saveJournal() {
             ledger: row.ledger,
             debit: row.debit,
             credit: row.credit,
-            subgroup: row.subgroup || '',
+            subgroup: row.subgroup,
             narration: narration || 'Journal entry',
             entry_type: 'journal'
         });
@@ -4914,7 +5000,7 @@ function saveJournal() {
     updateVoucherNumbers();
     resetJournal();
     
-    alert('Journal entry saved successfully!');
+    alert(`Journal entry saved successfully!\n\nTotal Debit: ${totalDebit.toFixed(2)}\nTotal Credit: ${totalCredit.toFixed(2)}`);
 }
 // ==================== UTILITY FUNCTIONS ====================
 
@@ -5500,6 +5586,12 @@ function restoreFromHistory(backupId) {
 
 // Delete backup record from history
 function deleteBackupRecord(backupId) {
+    // Check admin permission
+    if (!isAdmin()) {
+        showPermissionDenied('Only administrators can delete backup records.');
+        return;
+    }
+    
     showConfirmationModal(
         'Delete Backup Record',
         'Are you sure you want to remove this backup from history?',
@@ -5507,7 +5599,9 @@ function deleteBackupRecord(backupId) {
             backupHistory = backupHistory.filter(b => b.id !== backupId);
             localStorage.setItem('backupHistory', JSON.stringify(backupHistory));
             loadBackupHistory();
-            showNotification('Backup record deleted', 'success');
+            if (typeof showNotification === 'function') {
+                showNotification('Backup record deleted', 'success');
+            }
         }
     );
 }
@@ -5654,9 +5748,186 @@ function exportTransactionsToExcel() {
     
     showNotification(`Exported ${transactions.length} transactions to Excel`, 'success');
 }
+// Update UI based on user role (hide delete buttons for non-admin)
+function updateUIBasedOnUserRole() {
+    const isUserAdmin = isAdmin();
+    
+    // Hide/show delete buttons in transactions table
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(btn => {
+        if (!isUserAdmin) {
+            btn.style.display = 'none';
+            btn.disabled = true;
+        } else {
+            btn.style.display = 'inline-flex';
+            btn.disabled = false;
+        }
+    });
+    
+    // Hide/show delete all button
+    const deleteAllBtn = document.querySelector('.delete-all-btn');
+    if (deleteAllBtn) {
+        if (!isUserAdmin) {
+            deleteAllBtn.style.display = 'none';
+        } else {
+            deleteAllBtn.style.display = 'inline-block';
+        }
+    }
+    
+    // Hide/show delete buttons in ledger management
+    const ledgerDeleteBtns = document.querySelectorAll('.delete-ledger-btn');
+    ledgerDeleteBtns.forEach(btn => {
+        if (!isUserAdmin) {
+            btn.style.display = 'none';
+            btn.disabled = true;
+        } else {
+            btn.style.display = 'inline-block';
+            btn.disabled = false;
+        }
+    });
+    
+    // Hide/show remove row buttons in journal
+    const removeRowBtns = document.querySelectorAll('.remove-row-btn');
+    removeRowBtns.forEach(btn => {
+        if (!isUserAdmin) {
+            btn.style.display = 'none';
+            btn.disabled = true;
+        } else {
+            btn.style.display = 'block';
+            btn.disabled = false;
+        }
+    });
+    
+    // Hide/show data management danger buttons
+    const dangerBtns = document.querySelectorAll('.danger-btn, .delete-backup-btn');
+    dangerBtns.forEach(btn => {
+        if (!isUserAdmin) {
+            btn.style.display = 'none';
+            btn.disabled = true;
+        } else {
+            btn.style.display = 'inline-block';
+            btn.disabled = false;
+        }
+    });
+    
+    // Show/hide manage ledgers button for non-admin
+    const manageLedgersBtn = document.querySelector('.manage-ledgers-btn');
+    if (manageLedgersBtn) {
+        if (!isUserAdmin) {
+            manageLedgersBtn.style.display = 'none';
+        } else {
+            manageLedgersBtn.style.display = 'inline-block';
+        }
+    }
+    
+    // Add/remove admin badge
+    if (isUserAdmin) {
+        addAdminBadge();
+        removeUserViewMessage();
+    } else {
+        removeAdminBadge();
+        if (isLoggedIn()) {
+            addUserViewModeMessage();
+        }
+    }
+}
 
+// Add admin badge to header
+function addAdminBadge() {
+    let badge = document.querySelector('.admin-badge');
+    if (!badge) {
+        const navbar = document.querySelector('.navbar ul');
+        if (navbar && !document.querySelector('.admin-badge')) {
+            badge = document.createElement('li');
+            badge.className = 'admin-badge';
+            badge.innerHTML = '<span style="background: #2c7a4d; color: white; padding: 0.3rem 1rem; border-radius: 2rem; font-size: 1.2rem;"><i class="fas fa-shield-alt"></i> Admin Mode</span>';
+            navbar.appendChild(badge);
+        }
+    }
+}
+
+// Remove admin badge
+function removeAdminBadge() {
+    const badge = document.querySelector('.admin-badge');
+    if (badge) badge.remove();
+}
+
+// Add user view mode message
+function addUserViewModeMessage() {
+    let messageDiv = document.querySelector('.user-view-message');
+    if (!messageDiv && !isAdmin() && isLoggedIn()) {
+        const recentEntries = document.querySelector('.recent-entries');
+        if (recentEntries) {
+            messageDiv = document.createElement('div');
+            messageDiv.className = 'user-view-message';
+            messageDiv.style.cssText = 'background: #d1ecf1; border-left: 4px solid #17a2b8; padding: 1rem; margin-bottom: 1rem; border-radius: 0.5rem; font-size: 1.3rem;';
+            messageDiv.innerHTML = '<i class="fas fa-info-circle"></i> <strong>View Mode:</strong> You are logged in as a regular user. Delete and management functions are disabled.';
+            recentEntries.insertBefore(messageDiv, recentEntries.firstChild);
+        }
+    }
+}
+
+// Remove user view mode message
+function removeUserViewMessage() {
+    const messageDiv = document.querySelector('.user-view-message');
+    if (messageDiv) messageDiv.remove();
+}
+
+// Add admin badge to header
+function addAdminBadge() {
+    let badge = document.querySelector('.admin-badge');
+    if (!badge) {
+        const navbar = document.querySelector('.navbar ul');
+        if (navbar && !document.querySelector('.admin-badge')) {
+            badge = document.createElement('li');
+            badge.className = 'admin-badge';
+            badge.innerHTML = '<span style="background: #2c7a4d; color: white; padding: 0.3rem 1rem; border-radius: 2rem; font-size: 1.2rem;"><i class="fas fa-shield-alt"></i> Admin Mode</span>';
+            navbar.appendChild(badge);
+        }
+    }
+}
+
+// Remove admin badge
+function removeAdminBadge() {
+    const badge = document.querySelector('.admin-badge');
+    if (badge) badge.remove();
+}
+
+// Add user view mode message
+function addUserViewModeMessage() {
+    let messageDiv = document.querySelector('.user-view-message');
+    if (!messageDiv && !isAdmin() && isLoggedIn()) {
+        const recentEntries = document.querySelector('.recent-entries');
+        if (recentEntries) {
+            messageDiv = document.createElement('div');
+            messageDiv.className = 'user-view-message';
+            messageDiv.style.cssText = 'background: #d1ecf1; border-left: 4px solid #17a2b8; padding: 1rem; margin-bottom: 1rem; border-radius: 0.5rem; font-size: 1.3rem;';
+            messageDiv.innerHTML = '<i class="fas fa-info-circle"></i> <strong>View Mode:</strong> You are logged in as a regular user. Delete and management functions are disabled.';
+            recentEntries.insertBefore(messageDiv, recentEntries.firstChild);
+        }
+    }
+}
+
+// Override the displayRecentTransactions to hide delete buttons after refresh
+const originalDisplayRecentTransactions = displayRecentTransactions;
+displayRecentTransactions = function() {
+    originalDisplayRecentTransactions();
+    // Hide delete buttons if not admin
+    if (!isAdmin()) {
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(btn => {
+            btn.style.display = 'none';
+        });
+    }
+};
 // Show confirmation dialog before clearing all data
 function confirmClearAllData() {
+    // Check admin permission
+    if (!isAdmin()) {
+        showPermissionDenied('Only administrators can clear all data.');
+        return;
+    }
+    
     showConfirmationModal(
         '⚠️ DANGER: Clear All Data',
         'This action will PERMANENTLY DELETE all your data:\n\n' +
@@ -5682,14 +5953,18 @@ function confirmClearAllData() {
                 window.backupSettings = null;
                 window.backupHistory = [];
                 
-                showNotification('All data has been cleared. Reloading page...', 'warning');
+                if (typeof showNotification === 'function') {
+                    showNotification('All data has been cleared. Reloading page...', 'warning');
+                }
                 
                 // Reload after 1.5 seconds
                 setTimeout(() => {
                     location.reload();
                 }, 1500);
             } else {
-                showNotification('Clear data cancelled', 'info');
+                if (typeof showNotification === 'function') {
+                    showNotification('Clear data cancelled', 'info');
+                }
             }
         }
     );
@@ -6807,3 +7082,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 500);
 });
+
+// Retry attaching amount listeners if elements aren't ready
+setTimeout(function() {
+    const paymentAmount = document.getElementById('payment-amount');
+    const receiptAmount = document.getElementById('receipt-amount');
+    
+    if (paymentAmount && !paymentAmount._hasListener) {
+        paymentAmount.addEventListener('input', function() {
+            handleAmountInput('payment');
+        });
+        paymentAmount._hasListener = true;
+        console.log('Payment amount listener attached via retry');
+    }
+    
+    if (receiptAmount && !receiptAmount._hasListener) {
+        receiptAmount.addEventListener('input', function() {
+            handleAmountInput('receipt');
+        });
+        receiptAmount._hasListener = true;
+        console.log('Receipt amount listener attached via retry');
+    }
+}, 500);

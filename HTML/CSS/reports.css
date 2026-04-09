@@ -150,6 +150,11 @@
     color: var(--black);
 }
 
+.report-table td {
+    color: #000000 !important;  /* Force black */
+}
+
+
 .report-summary {
     margin-top: 2.5rem;
     padding: 2rem;
@@ -291,19 +296,19 @@
 /* Dark Mode Specific Styles for Reports */
 .dark-mode .report-table th {
     background: var(--main-color);
-    color: var(--white);
+    color: var(--black);
 }
 
 .dark-mode .report-table td {
-    color: var(--black);
-    border-bottom-color: rgba(255, 255, 255, 0.1);
+    color: #979696 !important;  /* Force black */
 }
+
 
 .dark-mode .report-table tr:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgb(48, 47, 47);
 }
 
-.dark-mode .report-summary {
+.dark-mode .report-summary {    
     background: rgba(255, 255, 255, 0.05);
 }
 
@@ -312,7 +317,7 @@
 }
 
 .dark-mode .group-header {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.026);
 }
 
 .dark-mode .total-row {

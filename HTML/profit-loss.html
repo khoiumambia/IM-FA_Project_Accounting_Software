@@ -215,7 +215,7 @@
                         <label for="as-of-date"><i class="fas fa-calendar-alt"></i> As of Date:</label>
                         <input type="text" id="as-of-date" class="date-picker" placeholder="Select date" readonly>
                     </div>
-                    <button class="btn" onclick="loadProfitLoss()"><i class="fas fa-search"></i> Load Report</button>
+                    
                 </div>
                 <div class="report-actions">
                     <button class="btn" onclick="printReport()"><i class="fas fa-print"></i> Print</button>
@@ -291,6 +291,7 @@
 
         // Safety checks
         document.addEventListener('DOMContentLoaded', function() {
+            loadProfitLoss();
             if (typeof transactions === 'undefined') window.transactions = [];
             if (typeof ledgers === 'undefined') window.ledgers = [];
             if (typeof banks === 'undefined') window.banks = [];
@@ -303,6 +304,7 @@
     // Initialize dark mode when page loads
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize dark mode if function exists
+        loadProfitLoss();
         if (typeof initDarkMode === 'function') {
             initDarkMode();
         }

@@ -1195,15 +1195,22 @@ function loadBalanceSheet() {
         `;
     }
 
+     // Add styled Total Assets row (same style as Equity + Liabilities)
     reportHTML += `
-            </tbody>
-            <tfoot>
-                <tr class="total-row">
-                    <td style="padding: 1rem; text-align: left;"><strong>Total Assets</strong></td>
-                    <td style="padding: 1rem; text-align: right;"><strong>${formatNumber(totalAssets)}</strong></td>
-                </tr>
-            </tfoot>
-        </table>
+        <div style="margin: 0 0 2rem 0;">
+            <table class="report-table" style="background: linear-gradient(135deg, var(--main-color), var(--secondary-color));">
+                <tfoot>
+                    <tr style="border: none;">
+                        <td style="padding: 1.5rem; text-align: left; border: none;">
+                            <strong style="color: white; font-size: 1.6rem;">Total Assets</strong>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: right; border: none;">
+                            <strong style="color: white; font-size: 1.8rem;">${formatNumber(totalAssets)}</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     `;
 
     // ========== LIABILITIES SECTION ==========
@@ -1322,8 +1329,25 @@ function loadBalanceSheet() {
         </table>
     `;
 
-    // ========== SUMMARY ==========
+    // ========== EQUITY + LIABILITIES ROW ==========
     const totalLiabilitiesEquity = totalLiabilities + totalEquity;
+    reportHTML += `
+        <div style="margin: 2rem 0 1rem 0;">
+            <table class="report-table" style="background: linear-gradient(135deg, var(--main-color), var(--secondary-color));">
+                <tfoot>
+                    <tr style="border: none;">
+                        <td style="padding: 1.5rem; text-align: left; border: none;">
+                            <strong style="color: white; font-size: 1.6rem;">Total Equity + Liabilities</strong>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: right; border: none;">
+                            <strong style="color: white; font-size: 1.8rem;">${formatNumber(totalLiabilitiesEquity)}</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    `;
+    // ========== SUMMARY ==========
     const difference = Math.abs(totalAssets - totalLiabilitiesEquity);
 
     reportHTML += `
